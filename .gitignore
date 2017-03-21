@@ -7,3 +7,6 @@
 Homestead.json
 Homestead.yaml
 .env
+/resources/assets/react/node_modules
+npm-debug.log
+.DS_Store
