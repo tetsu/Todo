@@ -68,15 +68,23 @@ function todoApiCall(apiJson){
 function reflectGetList(data){
   if(data.length > 0){
     data.map(function(item){
-      if(typeof item.start_at == 'undefined') item.start_at = "未定";
+      if(typeof item.due_date == 'undefined') item.due_date = "未定";
+      var priority = '';
+      if(item.priority == 5){priority = '最重要';}
+      else if(item.priority == 4){priority = '重要';}
+      else if(item.priority == 3){priority = '普通';}
+      else if(item.priority == 2){priority = '重要でない';}
+      else if(item.priority == 1){priority = '全く重要でない';}
       var todoList = document.createElement("tr");
       todoList.id = `todo-${item.id}`;
       todoList.innerHTML =
          `<th scope="row">${item.title}</th>
-          <td>${item.start_at}</td>
-          <td>
-            <button type="button" class="edit-btn btn btn-default" data-toggle="modal" data-target="#editModal" data-key="${item.id}">編集</button>
+          <td style="width:100px;">${item.due_date}</td>
+          <td style="width:120px;">${priority}</td>
+          <td style="width:190px;">
             <button type="button" class="del-btn btn btn-default" data-toggle="modal" data-target="#delModal" data-key="${item.id}">削除</button>
+            <button type="button" class="edit-btn btn btn-default" data-toggle="modal" data-target="#editModal" data-key="${item.id}">編集</button>
+            <button type="button" class="edit-btn btn btn-success" data-toggle="modal" data-target="#compModal" data-key="${item.id}">完了</button>
           </td>`;
       var listElement = document.getElementById("todo-table").appendChild(todoList);
     });
@@ -109,7 +117,7 @@ function reflectDeleteRequest(data){
   document.getElementById(`todo-table`).removeChild(
     document.getElementById(`todo-${data.id}`)
   );
-  document.getElementById('api-return-message').innerHTML = `${data.title}削除成功。`;
+  document.getElementById('api-return-message').innerHTML = `「${data.title}」を削除しました。`;
   document.getElementById('api-alert').className = "alert alert-success";
   document.getElementById('api-alert').setAttribute("style", "visibility:visible;");
 }

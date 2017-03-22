@@ -12,10 +12,20 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+      $faker = Faker\Factory::create('ja_JP');
+
       User::create([
-          'name' => 'tetsuro',
+          'name' => '鉄郎',
           'email' => 'tetsuromori@gmail.com',
           'password' => bcrypt('secret')
       ]);
+
+      for($i=0; $i<4; $i++){
+        User::create([
+          'name' => $faker->name,
+          'email' => $faker->email,
+          'password' => bcrypt('secret')
+        ]);
+      }
     }
 }

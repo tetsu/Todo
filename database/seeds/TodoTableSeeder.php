@@ -14,35 +14,14 @@ class TodoTableSeeder extends Seeder
     {
       $faker = Faker\Factory::create('ja_JP');
 
-      Todo::create([
-          'title' => 'Task A',
-          'content' => 'Content A',
-          'starts_at' => $faker->dateTime(),
-          'ends_at' => $faker->dateTime()
-      ]);
-      Todo::create([
-          'title' => 'Task B',
-          'content' => 'Content B',
-          'starts_at' => $faker->dateTime(),
-          'ends_at' => $faker->dateTime()
-      ]);
-      Todo::create([
-          'title' => 'Task C',
-          'content' => 'Content C',
-          'starts_at' => $faker->dateTime(),
-          'ends_at' => $faker->dateTime()
-      ]);
-      Todo::create([
-          'title' => 'Task D',
-          'content' => 'Content D',
-          'starts_at' => $faker->dateTime(),
-          'ends_at' => $faker->dateTime()
-      ]);
-      Todo::create([
-          'title' => 'Task E',
-          'content' => 'Content E',
-          'starts_at' => $faker->dateTime(),
-          'ends_at' => $faker->dateTime()
-      ]);
+      for($i=0; $i<100; $i++){
+        Todo::create([
+          'title' => 'タスク'.$i,
+          'user_id' => rand(1,5),
+          'priority' => rand(1,5),
+          'due_date' => $faker->date($format='Y-m-d'),
+          'comp_date' => rand(0,10)==0 ? $faker->date($format='Y-m-d') : null
+        ]);
+      }
     }
 }

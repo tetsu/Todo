@@ -12,14 +12,26 @@ class TodoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $todo = Todo::get();
-        return response()->json([
-          'status'=>'success',
-          'data' => $todo,
-        ]);
+      if($request->done){
+        $todo = Todo::where('user_id', $request->user_id)
+          ->whereNotNull('comp_date')
+          ->orderBy('comp_date','DESC')
+          ->get();
+      } else {
+        $todo = Todo::where('user_id', $request->user_id)
+          ->where('comp_date', null)
+          ->orderBy('priority','DESC')
+          ->orderBy('due_date','ASC')->get();
+      }
+
+      return response()->json([
+        'status'=>'success',
+        'data' => $todo,
+      ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

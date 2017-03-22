@@ -7,51 +7,42 @@
         <div id="api-alert" class="alert alert-success" role="alert" aria-hidden="true" style="visibility:hidden;">
           <strong id="api-return-message"></strong>
         </div>
-        <div><button type=button class="btn btn-primary" data-toggle="modal" data-target="#addModal">新規TODO作成</button></div>
+        <div><button type=button class="btn btn-primary" data-toggle="modal" data-target="#addModal">TODO追加</button></div>
       </div>
     </div>
+
     <br />
-    <!--div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-            </div>
-        </div>
-    </div-->
+
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
         <table class="table table-striped">
           <thead class="thead-inverse">
             <tr>
-              <th>タイトル</th>
-              <th>日時</th>
-              <th>編集・削除</th>
+              <th>未完タスク</th>
+              <th>予定日</th>
+              <th>優先度</th>
+              <th>操作</th>
             </tr>
           </thead>
           <tbody id="todo-table">
-            <!--tr>
-              <th scope="row">Mark</th>
-              <td>Otto</td>
-              <td>
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editModal">編集</button>
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#delModal">削除</button>
-              </td>
-            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <br />
+
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <table class="table table-striped">
+          <thead class="thead-inverse">
             <tr>
-              <th scope="row">Jacob</th>
-              <td>Thornton</td>
-              <td>
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editModal">編集</button>
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#delModal">削除</button>
-              </td>
+              <th>完了タスク</th>
+              <th>予定日</th>
+              <th>操作</th>
             </tr>
-            <tr>
-              <th scope="row">Larry</th>
-              <td>the Bird</td>
-              <td>
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editModal">編集</button>
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#delModal">削除</button>
-              </td>
-            </tr-->
+          </thead>
+          <tbody id="done-table">
           </tbody>
         </table>
       </div>
@@ -71,28 +62,22 @@
       <div class="modal-body">
         <form>
           <div class="form-group">
-            <label for="recipient-name" class="form-control-label">タイトル</label>
+            <label for="recipient-name" class="form-control-label">タスク名</label>
             <input type="text" class="form-control" id="recipient-name">
           </div>
           <div class="form-group">
-            <label for="recipient-name" class="form-control-label">開始日</label>
+            <label for="recipient-name" class="form-control-label">完了予定日</label>
             <input type="date" class="form-control" id="recipient-name">
           </div>
           <div class="form-group">
-            <label for="recipient-name" class="form-control-label">開始時間</label>
-            <input type="time" class="form-control" id="recipient-name">
-          </div>
-          <div class="form-group">
-            <label for="recipient-name" class="form-control-label">終了日</label>
-            <input type="date" class="form-control" id="recipient-name">
-          </div>
-          <div class="form-group">
-            <label for="recipient-name" class="form-control-label">終了時間</label>
-            <input type="time" class="form-control" id="recipient-name">
-          </div>
-          <div class="form-group">
-            <label for="message-text" class="form-control-label">詳細</label>
-            <textarea class="form-control" id="message-text"></textarea>
+            <label for="message-text" class="form-control-label">優先度</label>
+            <div>
+              <input type="radio" name="q1" value="5"> 最重要
+              <input type="radio" name="q1" value="4"> 重要
+              <input type="radio" name="q1" value="3"> 普通
+              <input type="radio" name="q1" value="2"> 重要でない
+              <input type="radio" name="q1" value="1"> 全く重要でない
+            </div>
           </div>
         </form>
       </div>
@@ -175,7 +160,7 @@
 <script>
 window.onload = function(){
   user_id = {{$id}};
-  todoApiCall({'callName':'index' ,'request':{'user_id':user_id} });
+  todoApiCall({'callName':'index' ,'request':{'user_id':user_id, 'done':0} });
 }
 </script>
 <script src="{{ asset('js/apicall.js') }}"></script>
