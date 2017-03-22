@@ -97,19 +97,21 @@ class TodoController extends Controller
      */
     public function update(Request $request, Todo $todo)
     {
-      $new = Todo::where('id', $todo->id)
-        ->update(['title' => $todo->title, 'due_date'=>$todo->due_date, 'priority'=>$todo->priority]);
-      console.log($new);
+      $success = Todo::where('id', $todo->id)
+        ->update(['title' => $request->title, 'due_date'=>$request->due_date, 'priority'=>$request->priority]);
 
-      $all = Todo::where('user_id', $request->user_id)
-        ->where('comp_date', null)
-        ->orderBy('priority','DESC')
-        ->orderBy('due_date','ASC')->get();
+      if($success){
+        $new = Todo::where('id', $todo->id)->first();
+        return response()->json([
+          'status'=>'success',
+          'data' => $new
+        ]);
+      } else {
+        return response()->json([
+          'status'=>'fail'
+        ]);
+      }
 
-      return response()->json([
-        'status'=>'success',
-        'data' => $all,
-      ]);
     }
 
     /**

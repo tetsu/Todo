@@ -134,7 +134,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-        <button id="update-button" type="button" class="btn btn-primary">更新</button>
+        <button id="update-button" type="button" class="btn btn-primary" data-dismiss="modal">更新</button>
       </div>
     </div>
   </div>

@@ -1,6 +1,37 @@
 window.onload = function(){
+  refreshTodoList();
+  refreshDoneList();
+}
+
+function refreshTodoList(){
+  //remove current todo items
+  todoTable = document.getElementById('todo-table');
+  while (todoTable.firstChild) {
+    todoTable.removeChild(todoTable.firstChild);
+  }
+
   user_id = document.getElementById('user-data').getAttribute("data-id");
+  todoLiStSpinner = document.getElementById('todo-list-spinner');
+
+  //show spinner
+  todoLiStSpinner.innerHTML = `<i class="fa fa-refresh fa-spin" style="font-size:24px"/></i>`;
+
   todoApiCall({'callName':'index' ,'request':{user_id, 'done':0} });
+}
+
+function refreshDoneList(){
+  //remove current done items
+  doneTable = document.getElementById('done-table');
+  while (doneTable.firstChild) {
+    doneTable.removeChild(doneTable.firstChild);
+  }
+
+  user_id = document.getElementById('user-data').getAttribute("data-id");
+  doneListSpinner = document.getElementById('done-list-spinner');
+
+  //show spinner
+  doneListSpinner.innerHTML = `<i class="fa fa-refresh fa-spin" style="font-size:24px"/></i>`;
+
   todoApiCall({'callName':'done' ,'request':{user_id, 'done':1} });
 }
 
@@ -77,6 +108,7 @@ function todoApiCall(apiJson){
 }
 
 function reflectGetList(data){
+  todoLiStSpinner = document.getElementById('todo-list-spinner');
   if(data.length > 0){
     data.map(function(item){
       if(typeof item.due_date == 'undefined') item.due_date = "未定";
@@ -101,22 +133,21 @@ function reflectGetList(data){
       var listElement = document.getElementById("todo-table").appendChild(todoList);
     });
     //remove spinner
-    element = document.getElementById('todo-list-spinner');
-    while (element.firstChild) {
-      element.removeChild(element.firstChild);
+    while (todoLiStSpinner.firstChild) {
+      todoLiStSpinner.removeChild(todoLiStSpinner.firstChild);
     }
   } else {
     //remove spinner
-    element = document.getElementById('todo-list-spinner');
-    while (element.firstChild) {
-      element.removeChild(element.firstChild);
+    while (todoLiStSpinner.firstChild) {
+      todoLiStSpinner.removeChild(todoLiStSpinner.firstChild);
     }
-    element.innerHTML = `未完了タスクはありません`;
+    document.getElementById('todo-list-spinner').innerHTML = `未完了タスクはありません`;
   }
 
 }
 
 function reflectDoneList(data){
+  doneListSpinner = document.getElementById('done-list-spinner');
   if(data.length > 0){
     data.map(function(item){
       if(typeof item.due_date == 'undefined') item.due_date = "未定";
@@ -141,17 +172,15 @@ function reflectDoneList(data){
       var listElement = document.getElementById("done-table").appendChild(todoList);
     });
     //remove spinner
-    element = document.getElementById('done-list-spinner');
-    while (element.firstChild) {
-      element.removeChild(element.firstChild);
+    while (doneListSpinner.firstChild) {
+      doneListSpinner.removeChild(doneListSpinner.firstChild);
     }
   } else {
     //remove spinner
-    element = document.getElementById('done-list-spinner');
-    while (element.firstChild) {
-      element.removeChild(element.firstChild);
+    while (doneListSpinner.firstChild) {
+      doneListSpinner.removeChild(doneListSpinner.firstChild);
     }
-    element.innerHTML = `完了タスクはありません`;
+    document.getElementById('done-list-spinner').innerHTML = `完了タスクはありません`;
   }
 
 }
@@ -169,7 +198,10 @@ function reflectAddRequest(data){
   }
 
 function reflectUpdateRequest(data){
-  console.log(data);
+  refreshTodoList();
+  document.getElementById('api-return-message').innerHTML = `「${data.title}」を更新しました。`;
+  document.getElementById('api-alert').className = "alert alert-success";
+  document.getElementById('api-alert').setAttribute("style", "visibility:visible;");
 }
 
 function reflectDeleteRequest(data){
