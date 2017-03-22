@@ -14,12 +14,18 @@ class TodoController extends Controller
      */
     public function index(Request $request)
     {
-      if($request->done){
+      if(isset($request->todo_id)){
+        $todo = Todo::where('id', $request->todo_id)->first();
+      }
+
+      else if($request->done){
         $todo = Todo::where('user_id', $request->user_id)
           ->whereNotNull('comp_date')
           ->orderBy('comp_date','DESC')
           ->get();
-      } else {
+      }
+
+      else {
         $todo = Todo::where('user_id', $request->user_id)
           ->where('comp_date', null)
           ->orderBy('priority','DESC')
@@ -91,7 +97,19 @@ class TodoController extends Controller
      */
     public function update(Request $request, Todo $todo)
     {
-        //
+      $new = Todo::where('id', $todo->id)
+        ->update(['title' => $todo->title, 'due_date'=>$todo->due_date, 'priority'=>$todo->priority]);
+      console.log($new);
+
+      $all = Todo::where('user_id', $request->user_id)
+        ->where('comp_date', null)
+        ->orderBy('priority','DESC')
+        ->orderBy('due_date','ASC')->get();
+
+      return response()->json([
+        'status'=>'success',
+        'data' => $all,
+      ]);
     }
 
     /**

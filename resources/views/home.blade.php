@@ -1,13 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
+<div id="user-data" data-id="{{$id}}"></div>
 <div class="container">
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
         <div id="api-alert" class="alert alert-success" role="alert" aria-hidden="true" style="visibility:hidden;">
           <strong id="api-return-message"></strong>
         </div>
-        <div><button type=button class="btn btn-primary" data-toggle="modal" data-target="#addModal">TODO追加</button></div>
+        <div><button type=button class="btn btn-primary" data-toggle="modal" data-target="#addModal">タスク追加</button></div>
       </div>
     </div>
 
@@ -18,6 +19,7 @@
         <table class="table table-striped">
           <thead class="thead-inverse">
             <tr>
+              <th></th>
               <th>未完タスク</th>
               <th>予定日</th>
               <th>優先度</th>
@@ -27,6 +29,9 @@
           <tbody id="todo-table">
           </tbody>
         </table>
+        <div id="todo-list-spinner" style="text-align: center;">
+          <i class="fa fa-refresh fa-spin" style="font-size:24px"/></i>
+        </div>
       </div>
     </div>
 
@@ -37,14 +42,20 @@
         <table class="table table-striped">
           <thead class="thead-inverse">
             <tr>
+              <th></th>
               <th>完了タスク</th>
               <th>予定日</th>
+              <th>完了日</th>
+              <th>優先度</th>
               <th>操作</th>
             </tr>
           </thead>
           <tbody id="done-table">
           </tbody>
         </table>
+        <div id="done-list-spinner" style="text-align: center;">
+          <i class="fa fa-refresh fa-spin" style="font-size:24px"/></i>
+        </div>
       </div>
     </div>
 </div>
@@ -54,7 +65,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">新規TODO作成</h5>
+        <h5 class="modal-title" id="exampleModalLabel">タスク作成</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -62,21 +73,21 @@
       <div class="modal-body">
         <form>
           <div class="form-group">
-            <label for="recipient-name" class="form-control-label">タスク名</label>
-            <input type="text" class="form-control" id="recipient-name">
+            <label for="recipient-name" class="form-control-label">タスク</label>
+            <input type="text" class="form-control" id="todo-title-input">
           </div>
           <div class="form-group">
             <label for="recipient-name" class="form-control-label">完了予定日</label>
-            <input type="date" class="form-control" id="recipient-name">
+            <input type="date" class="form-control" min="{{date("Y-m-d")}}" max="2050-12-31" value="{{date("Y-m-d")}}" id="due-date-input">
           </div>
           <div class="form-group">
             <label for="message-text" class="form-control-label">優先度</label>
             <div>
-              <input type="radio" name="q1" value="5"> 最重要
-              <input type="radio" name="q1" value="4"> 重要
-              <input type="radio" name="q1" value="3"> 普通
-              <input type="radio" name="q1" value="2"> 重要でない
-              <input type="radio" name="q1" value="1"> 全く重要でない
+              <input type="radio" name="priority" value="5"> 最重要
+              <input type="radio" name="priority" value="4"> 重要
+              <input type="radio" name="priority" value="3"> 普通
+              <input type="radio" name="priority" value="2"> 重要でない
+              <input type="radio" name="priority" value="1"> 全く重要でない
             </div>
           </div>
         </form>
@@ -94,7 +105,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">TODO編集</h5>
+        <h5 class="modal-title" id="exampleModalLabel">タスク編集</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -102,34 +113,28 @@
       <div class="modal-body">
         <form>
           <div class="form-group">
-            <label for="recipient-name" class="form-control-label">タイトル</label>
-            <input type="text" class="form-control" id="recipient-name">
+            <label for="recipient-name" class="form-control-label">タスク</label>
+            <input id="todo-title-edit-input" type="text" class="form-control">
           </div>
           <div class="form-group">
-            <label for="recipient-name" class="form-control-label">開始日</label>
-            <input type="date" class="form-control" id="recipient-name">
+            <label for="recipient-name" class="form-control-label">完了予定日</label>
+            <input id="due-date-edit-input" type="date" class="form-control">
           </div>
           <div class="form-group">
-            <label for="recipient-name" class="form-control-label">開始時間</label>
-            <input type="time" class="form-control" id="recipient-name">
-          </div>
-          <div class="form-group">
-            <label for="recipient-name" class="form-control-label">終了日</label>
-            <input type="date" class="form-control" id="recipient-name">
-          </div>
-          <div class="form-group">
-            <label for="recipient-name" class="form-control-label">終了時間</label>
-            <input type="time" class="form-control" id="recipient-name">
-          </div>
-          <div class="form-group">
-            <label for="message-text" class="form-control-label">詳細</label>
-            <textarea class="form-control" id="message-text"></textarea>
+            <label for="message-text" class="form-control-label">優先度</label>
+            <div>
+              <input id="priority-edit-input-5" class="priority-edit-input" type="radio" name="priority" value="5"> 最重要
+              <input id="priority-edit-input-4" class="priority-edit-input" type="radio" name="priority" value="4"> 重要
+              <input id="priority-edit-input-3" class="priority-edit-input" type="radio" name="priority" value="3"> 普通
+              <input id="priority-edit-input-2" class="priority-edit-input" type="radio" name="priority" value="2"> 重要でない
+              <input id="priority-edit-input-1" class="priority-edit-input" type="radio" name="priority" value="1"> 全く重要でない
+            </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-        <button type="button" class="btn btn-primary">作成</button>
+        <button id="update-button" type="button" class="btn btn-primary">更新</button>
       </div>
     </div>
   </div>
@@ -141,7 +146,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">削除</h5>
+        <h5 class="modal-title" id="exampleModalLabel">タスク削除</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -157,12 +162,6 @@
   </div>
 </div>
 
-<script>
-window.onload = function(){
-  user_id = {{$id}};
-  todoApiCall({'callName':'index' ,'request':{'user_id':user_id, 'done':0} });
-}
-</script>
 <script src="{{ asset('js/apicall.js') }}"></script>
 <script src="{{ asset('js/bootstrap.js') }}"></script>
 @endsection
