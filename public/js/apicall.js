@@ -3,11 +3,17 @@ window.onload = function(){
   refreshDoneList();
 }
 
-function showErrorMessage(data){
-  //show success message
-  document.getElementById('api-return-message').innerHTML = `${data.message}`;
+function showErrorMessage(message){
+  document.getElementById('api-return-message').innerHTML = `${message}`;
   document.getElementById('api-alert').className = "alert alert-danger";
   document.getElementById('api-alert').setAttribute("style", "visibility:visible;");
+}
+
+function showSuccessMessage(message){
+  document.getElementById('api-return-message').innerHTML = `${message}`;
+  document.getElementById('api-alert').className = "alert alert-success";
+  document.getElementById('api-alert').setAttribute("style", "visibility:visible;");
+  //setInterval(document.getElementById('api-alert').setAttribute("style", "visibility:hidden;"), 5000);
 }
 
 function refreshTodoList(){
@@ -127,21 +133,21 @@ function todoApiCall(apiJson){
         } else if(apiJson.callName == 'add'){
           reflectAddRequest(responseJson.data);
         } else if(apiJson.callName == 'update'){
-          reflectUpdateRequest(responseJson.data);
+          reflectUpdateRequest(responseJson);
         } else if(apiJson.callName == 'delete'){
           reflectDeleteRequest(responseJson.data);
         }
       }
     } else {
       if(responseJson.status === 'fail' && responseJson.message){
-        showErrorMessage(responseJson);
+        showErrorMessage(responseJson.message);
       } else {
-        console.log('error');
+        showErrorMessage('Database Error');
       }
     }
   };
   request.onerror = function() {
-    console.log('error');
+    showErrorMessage('Database Error');
   };
   if(apiJson.method === 'GET'){
     request.send();
@@ -247,20 +253,16 @@ function reflectAddRequest(data){
   refreshTodoList();
 }
 
-function reflectUpdateRequest(data){
+function reflectUpdateRequest(res){
   refreshTodoList();
-  document.getElementById('api-return-message').innerHTML = `「${data.title}」を更新しました。`;
-  document.getElementById('api-alert').className = "alert alert-success";
-  document.getElementById('api-alert').setAttribute("style", "visibility:visible;");
+  showSuccessMessage(`${res.message}`);
 }
 
 function reflectDeleteRequest(data){
   document.getElementById(`todo-table`).removeChild(
     document.getElementById(`todo-${data.id}`)
   );
-  document.getElementById('api-return-message').innerHTML = `「${data.title}」を削除しました。`;
-  document.getElementById('api-alert').className = "alert alert-success";
-  document.getElementById('api-alert').setAttribute("style", "visibility:visible;");
+  showSuccessMessage(`「${data.title}」を削除しました。`);
 }
 
 function reflectEditRequest(data){

@@ -113,7 +113,8 @@ class TodoController extends Controller
         $new = Todo::where('id', $todo->id)->first();
         return response()->json([
           'status'=>'success',
-          'data' => $new
+          'data' => $new,
+          'message'=> '「'.$new->title.'」を更新しました。'
         ]);
       } else {
         return response()->json([
