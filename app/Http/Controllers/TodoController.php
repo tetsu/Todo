@@ -28,7 +28,7 @@ class TodoController extends Controller
       else {
         $todo = Todo::where('user_id', $request->user_id)
           ->where('comp_date', null)
-          ->orderBy('priority','DESC')
+          //->orderBy('priority','DESC')
           ->orderBy('due_date','ASC')->get();
       }
 

@@ -187,6 +187,7 @@ function reflectGetList(data){
       todoList.id = `todo-${item.id}`;
       todoList.innerHTML =
          `<th style="width:40px;" scope="row"><input type="checkbox" name="todo-checkbox" value="${item.id}"></th>
+          <th style="width:40px;" scope="row"><input type="checkbox" name="todo-checkbox" value="${item.id}"></th>
           <td>${item.title}</th>
           <td style="width:100px;">${item.due_date}</td>
           <td style="width:120px;">${priority}</td>
@@ -225,7 +226,8 @@ function reflectDoneList(data){
       var doneList = document.createElement("tr");
       doneList.id = `todo-${item.id}`;
       doneList.innerHTML =
-         `<th style="width:40px;" scope="row"><input class="done-checkbox" type="checkbox" name="done-checkbox" value="${item.id}"></th>
+         `<th style="width:40px;" scope="row"><input class="done-checkbox" type="checkbox" name="done-del-checkbox" value="${item.id}"></th>
+          <th style="width:40px;" scope="row"><input type="checkbox" name="done-uncomp-checkbox" value="${item.id}"></th>
           <td>${item.title}</td>
           <td style="width:100px;">${item.due_date}</td>
           <td style="width:100px;">${item.comp_date}</td>

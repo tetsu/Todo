@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<div id="main">
 <div id="user-data" data-id="{{$id}}"></div>
 <div class="container">
     <div class="row">
@@ -8,18 +9,19 @@
         <div id="api-alert" class="alert alert-success" role="alert" aria-hidden="true" style="visibility:hidden;">
           <strong id="api-return-message"></strong>
         </div>
-        <div><button type=button class="btn btn-primary" data-toggle="modal" data-target="#addModal">タスク追加</button></div>
+        <div><button type=button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addModal">タスク追加</button></div>
       </div>
     </div>
 
     <br />
 
     <div class="row">
-      <div class="col-md-8 col-md-offset-2">
+      <div class="col-md-10 col-md-offset-1">
         <table class="table table-striped">
           <thead class="thead-inverse">
             <tr>
-              <th></th>
+              <th><button class="btn btn-info btn-sm">削除</button></th>
+              <th><button class="btn btn-info btn-sm">完了</button></th>
               <th>未完タスク</th>
               <th>予定日</th>
               <th>優先度</th>
@@ -38,11 +40,12 @@
     <br />
 
     <div class="row">
-      <div class="col-md-8 col-md-offset-2">
+      <div class="col-md-10 col-md-offset-1">
         <table class="table table-striped">
           <thead class="thead-inverse">
             <tr>
-              <th></th>
+              <th><button class="btn btn-info btn-sm">削除</button></th>
+              <th><button class="btn btn-info btn-sm">未完</button></th>
               <th>完了タスク</th>
               <th>予定日</th>
               <th>完了日</th>
@@ -162,6 +165,7 @@
   </div>
 </div>
 
+</div>
 <script src="{{ asset('js/apicall.js') }}"></script>
 <script src="{{ asset('js/bootstrap.js') }}"></script>
 @endsection
