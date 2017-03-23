@@ -106,15 +106,23 @@ class TodoController extends Controller
      */
     public function update(Request $request, Todo $todo)
     {
-      $success = Todo::where('id', $todo->id)
-        ->update(['title' => $request->title, 'due_date'=>$request->due_date, 'priority'=>$request->priority]);
+      if(isset($request->comp_date)){
+        $message = 'を完了しました。';
+        $success = Todo::where('id', $todo->id)
+          ->update(['comp_date' => $request->comp_date]);
+      } else {
+        $message = 'を更新しました。';
+        $success = Todo::where('id', $todo->id)
+          ->update(['title' => $request->title, 'due_date'=>$request->due_date, 'priority'=>$request->priority]);
+      }
+
 
       if($success){
         $new = Todo::where('id', $todo->id)->first();
         return response()->json([
           'status'=>'success',
           'data' => $new,
-          'message'=> '「'.$new->title.'」を更新しました。'
+          'message'=> '「'.$new->title.'」'.$message
         ]);
       } else {
         return response()->json([

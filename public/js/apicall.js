@@ -78,7 +78,7 @@ function deleteTask(todo_id){
 }
 
 function compTask(id){
-  todoApiCall({'callName':'comp' ,'request':{id}, 'method':'PUT'});
+  todoApiCall({'callName':'comp' ,'request':{id, 'comp_date':getToday()}, 'method':'PUT'});
 }
 
 function editTask(todo_id){
@@ -91,6 +91,15 @@ function editTask(todo_id){
   todoApiCall({'callName':'get_one_todo' ,'request':{todo_id} });
 }
 
+function getToday(){
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth()+1; //January is 0!
+  var yyyy = today.getFullYear();
+  if(dd<10) dd='0'+dd;
+  if(mm<10) mm='0'+mm;
+  return `${yyyy}-${mm}-${dd}`;
+}
 
 function todoApiCall(apiJson){
   //encodeURIComponent
@@ -98,7 +107,7 @@ function todoApiCall(apiJson){
   reqStr = "";
   for (key in apiJson.request) {
     if(firstLoop){
-      reqStr = "?";
+      //reqStr = "?";
       firstLoop = false;
     } else {
       reqStr += "&";
@@ -109,15 +118,15 @@ function todoApiCall(apiJson){
   if(apiJson.callName === 'index'
   || apiJson.callName === 'done'
   || apiJson.callName === 'get_one_todo'){
-    request.open('GET', '/api/todo'+reqStr, true);
+    request.open('GET', '/api/todo?'+reqStr, true);
   } else if(apiJson.callName === 'delete'){
     request.open('DELETE', '/api/todo/'+apiJson.request['id'], true);
-  } else if(apiJson.callName === 'update'){
-    request.open('PUT', '/api/todo/'+apiJson.request['id']+reqStr, true);
+  } else if(apiJson.callName === 'update' || apiJson.callName === 'comp'){
+    request.open('PUT', '/api/todo/'+apiJson.request['id']+'?'+reqStr, true);
   } else if(apiJson.callName === 'add'){
-    request.open('GET', '/api/todo/create'+reqStr, true);
+    request.open('GET', '/api/todo/create'+'?'+reqStr, true);
   } else {
-    request.open('GET', '/api/todo/'+apiJson.callName+reqStr, true);
+    request.open('GET', '/api/todo/'+apiJson.callName+'?'+reqStr, true);
   }
 
   request.onload = function() {
@@ -134,6 +143,8 @@ function todoApiCall(apiJson){
           reflectAddRequest(responseJson.data);
         } else if(apiJson.callName == 'update'){
           reflectUpdateRequest(responseJson);
+        } else if(apiJson.callName == 'comp'){
+          reflectCompRequest(responseJson);
         } else if(apiJson.callName == 'delete'){
           reflectDeleteRequest(responseJson.data);
         }
@@ -149,10 +160,10 @@ function todoApiCall(apiJson){
   request.onerror = function() {
     showErrorMessage('Database Error');
   };
-  if(apiJson.method === 'GET'){
+  if(apiJson.method === 'GET' || apiJson.method === 'PUT'){
     request.send();
   } else {
-    request.send(JSON.stringify(apiJson.requst));
+    request.send(reqStr);
   }
 
 }
@@ -243,7 +254,7 @@ function reflectAddRequest(data){
 
   //Reset Add Task form
   document.getElementById('title-add-input').value = "";
-  //document.getElementById('due-date-add-input').value = Date.now();
+  document.getElementById('due-date-add-input').value = getToday();
   document.getElementById(`priority-add-input-5`).checked = true;
   document.getElementById(`priority-add-input-4`).checked = false;
   document.getElementById(`priority-add-input-3`).checked = false;
@@ -255,6 +266,12 @@ function reflectAddRequest(data){
 
 function reflectUpdateRequest(res){
   refreshTodoList();
+  showSuccessMessage(`${res.message}`);
+}
+
+function reflectCompRequest(res){
+  refreshTodoList();
+  refreshDoneList();
   showSuccessMessage(`${res.message}`);
 }
 
