@@ -114,10 +114,15 @@ class TodoController extends Controller
         $message = 'を完了しました。';
         $success = Todo::where('id', $todo->id)
           ->update(['comp_date' => $request->comp_date]);
-      } else {
+      } elseif(isset($request->title) && isset($request->due_date) && isset($request->priority)) {
         $message = 'を更新しました。';
         $success = Todo::where('id', $todo->id)
           ->update(['title' => $request->title, 'due_date'=>$request->due_date, 'priority'=>$request->priority]);
+      } else {
+        return response()->json([
+          'status'=>'fail',
+          'message'=>'データベースエラー'
+        ]);
       }
 
 

@@ -125,7 +125,7 @@ function todoApiCall(apiJson){
     request.open('GET', '/api/todo?'+reqStr, true);
   } else if(apiJson.callName === 'delete'){
     request.open('DELETE', '/api/todo/'+apiJson.request['id'], true);
-  } else if(apiJson.callName === 'update' || apiJson.callName === 'comp' || apiJson.callName === 'uncomp'){
+  } else if(apiJson.callName === 'update' || apiJson.callName === 'comp'){
     request.open('PUT', '/api/todo/'+apiJson.request['id']+'?'+reqStr, true);
   } else if(apiJson.callName === 'add'){
     request.open('GET', '/api/todo/create'+'?'+reqStr, true);
@@ -147,7 +147,7 @@ function todoApiCall(apiJson){
           reflectAddRequest(responseJson.data);
         } else if(apiJson.callName == 'update'){
           reflectUpdateRequest(responseJson);
-        } else if(apiJson.callName == 'comp' || apiJson.callName == 'uncomp'){
+        } else if(apiJson.callName == 'comp'){
           reflectCompRequest(responseJson);
         } else if(apiJson.callName == 'delete'){
           reflectDeleteRequest(responseJson.data);
