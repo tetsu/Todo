@@ -16,7 +16,7 @@ function refreshTodoList(){
   //show spinner
   todoLiStSpinner.innerHTML = `<i class="fa fa-refresh fa-spin" style="font-size:24px"/></i>`;
 
-  todoApiCall({'callName':'index' ,'request':{user_id, 'done':0} });
+  todoApiCall({'callName':'index' ,'request':{user_id, 'done':0}, 'method':'GET' });
 }
 
 function refreshDoneList(){
@@ -32,53 +32,71 @@ function refreshDoneList(){
   //show spinner
   doneListSpinner.innerHTML = `<i class="fa fa-refresh fa-spin" style="font-size:24px"/></i>`;
 
-  todoApiCall({'callName':'done' ,'request':{user_id, 'done':1} });
+  todoApiCall({'callName':'done' ,'request':{user_id, 'done':1}, method:'GET' });
 }
 
-function addTodo(user_id){
+function addTask(user_id){
   if(document.getElementById('new_event_group').value !== ""){
-    todoApiCall({'callName':'add' ,'request':{'event_id':event_id, 'value':document.getElementById('new_event_group').value}});
+    todoApiCall({
+      'callName':'add',
+      'request':{event_id, 'value':document.getElementById('new_event_group').value},
+      'method':'POST'
+    });
   } else {
     console.log("Input value is empty.");
   }
 
 }
 
-function updateTodo(id, title, due_date, priority, user_id){
-    //console.log({id, title, due_date, priority});
-    todoApiCall({'callName':'update' ,'request':{id, title, due_date, priority, user_id}});
+function updateTask(update_data){
+  todoApiCall({'callName':'update' ,'request':update_data, 'method':'PUT'});
 }
 
-function deleteTodo(todo_id){
-    todoApiCall({'callName':'delete' ,'request':{'id':todo_id}});
+function deleteTask(todo_id){
+  todoApiCall({'callName':'delete' ,'request':{'id':todo_id}, 'method':'DELETE'});
+}
+
+function compTask(id){
+  todoApiCall({'callName':'comp' ,'request':{id}, 'method':'PUT'});
+}
+
+function editTask(todo_id){
+  //empty values in Edit Modal
+  document.getElementById('todo-title-edit-input').value = null;
+  document.getElementById('due-date-edit-input').value = null;
+  document.getElementsByClassName('priority-edit-input').checked=false;
+
+  //API Call
+  todoApiCall({'callName':'get_one_todo' ,'request':{todo_id} });
 }
 
 
 function todoApiCall(apiJson){
   //encodeURIComponent
   firstLoop = true;
-  requestString = "";
+  reqStr = "";
   for (key in apiJson.request) {
     if(firstLoop){
-      requestString = "?";
+      reqStr = "?";
       firstLoop = false;
     } else {
-      requestString += "&";
+      reqStr += "&";
     }
-    requestString += `${key}=${apiJson.request[key]}`;
+    reqStr += `${key}=${apiJson.request[key]}`;
   }
   var request = new XMLHttpRequest();
   if(apiJson.callName === 'index'
   || apiJson.callName === 'done'
   || apiJson.callName === 'get_one_todo'){
-    request.open('GET', '/api/todo'+requestString, true);
+    request.open('GET', '/api/todo'+reqStr, true);
   } else if(apiJson.callName === 'delete'){
     request.open('DELETE', '/api/todo/'+apiJson.request['id'], true);
   } else if(apiJson.callName === 'update'){
-    request.open('PUT', '/api/todo/'+apiJson.request['id']+requestString, true);
+    request.open('PUT', '/api/todo/'+apiJson.request['id']+reqStr, true);
   } else {
-    request.open('GET', '/api/todo/'+apiJson.callName+requestString, true);
+    request.open('GET', '/api/todo/'+apiJson.callName+reqStr, true);
   }
+
   request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
       var responseJson = JSON.parse(request.responseText);
@@ -128,7 +146,7 @@ function reflectGetList(data){
           <td style="width:190px;">
             <button type="button" class="del-btn btn btn-default" data-toggle="modal" data-target="#delModal" data-key="${item.id}">削除</button>
             <button type="button" class="edit-btn btn btn-default" data-toggle="modal" data-target="#editModal" data-key="${item.id}">編集</button>
-            <button type="button" class="edit-btn btn btn-success" data-toggle="modal" data-target="#compModal" data-key="${item.id}">完了</button>
+            <button type="button" class="comp-btn btn btn-success" data-toggle="modal" data-target="#compModal" data-key="${item.id}">完了</button>
           </td>`;
       var listElement = document.getElementById("todo-table").appendChild(todoList);
     });
@@ -166,8 +184,8 @@ function reflectDoneList(data){
           <td style="width:100px;">${item.comp_date}</td>
           <td style="width:120px;">${priority}</td>
           <td style="width:190px;">
-            <button type="button" class="del-btn btn btn-default" data-toggle="modal" data-target="#delModal" data-key="${item.id}">削除</button>
-            <button type="button" class="edit-btn btn btn-default" data-toggle="modal" data-target="#editModal" data-key="${item.id}">未完にする</button>
+            <button type="button" class="del-done-btn btn btn-default" data-toggle="modal" data-target="#delModal" data-key="${item.id}">削除</button>
+            <button type="button" class="uncomp-btn btn btn-default" data-toggle="modal" data-target="#editModal" data-key="${item.id}">未完にする</button>
           </td>`;
       var listElement = document.getElementById("done-table").appendChild(todoList);
     });
@@ -223,15 +241,13 @@ function reflectEditRequest(data){
 
 document.addEventListener('click', function (event) {
   if (event.target.className.split(" ")[0] ==='edit-btn') {
-    document.getElementById('todo-title-edit-input').value = null;
-    document.getElementById('due-date-edit-input').value = null;
-    document.getElementsByClassName('priority-edit-input').checked=false;
-    var selectedTodo = event.target.getAttribute("data-key");
-    todoApiCall({'callName':'get_one_todo' ,'request':{'todo_id':selectedTodo} });
+    editTask(event.target.getAttribute("data-key"));
   } else if (event.target.className.split(" ")[0] ==='del-btn') {
     document.getElementById("delete-button").setAttribute("data-key", event.target.getAttribute("data-key"));
+  } else if (event.target.className.split(" ")[0] ==='comp-btn') {
+    compTask(event.target.getAttribute("data-key"));
   } else if (event.target.id === 'delete-button'){
-    return deleteTodo(event.target.getAttribute("data-key"));
+    deleteTask(event.target.getAttribute("data-key"));
   } else if (event.target.id === 'update-button'){
     var id = event.target.getAttribute("data-key");
     var title = document.getElementById('todo-title-edit-input').value;
@@ -242,6 +258,6 @@ document.addEventListener('click', function (event) {
         var priority = document.getElementById(`priority-edit-input-${i}`).value;
       }
     }
-    return updateTodo(id, title, due_date, priority, user_id);
+    return updateTask({id, title, due_date, priority, user_id});
   }
 });
