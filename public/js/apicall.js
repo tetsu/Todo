@@ -207,19 +207,19 @@ function reflectDoneList(data){
       else if(item.priority == 3){priority = '普通';}
       else if(item.priority == 2){priority = '重要でない';}
       else if(item.priority == 1){priority = '全く重要でない';}
-      var todoList = document.createElement("tr");
-      todoList.id = `todo-${item.id}`;
-      todoList.innerHTML =
+      var doneList = document.createElement("tr");
+      doneList.id = `todo-${item.id}`;
+      doneList.innerHTML =
          `<th style="width:40px;" scope="row"><input class="done-checkbox" type="checkbox" name="done-checkbox" value="${item.id}"></th>
           <td>${item.title}</td>
           <td style="width:100px;">${item.due_date}</td>
           <td style="width:100px;">${item.comp_date}</td>
           <td style="width:120px;">${priority}</td>
           <td style="width:190px;">
-            <button type="button" class="del-done-btn btn btn-default" data-toggle="modal" data-target="#delModal" data-key="${item.id}">削除</button>
+            <button type="button" class="del-btn btn btn-default" data-toggle="modal" data-target="#delModal" data-key="${item.id}">削除</button>
             <button type="button" class="uncomp-btn btn btn-default" data-toggle="modal" data-target="#editModal" data-key="${item.id}">未完にする</button>
           </td>`;
-      var listElement = document.getElementById("done-table").appendChild(todoList);
+      var listElement = document.getElementById("done-table").appendChild(doneList);
     });
     //remove spinner
     while (doneListSpinner.firstChild) {
@@ -259,7 +259,8 @@ function reflectUpdateRequest(res){
 }
 
 function reflectDeleteRequest(data){
-  document.getElementById(`todo-table`).removeChild(
+  targetTable = data.comp_date ? `done-table` : `todo-table`;
+  document.getElementById(targetTable).removeChild(
     document.getElementById(`todo-${data.id}`)
   );
   showSuccessMessage(`「${data.title}」を削除しました。`);
@@ -277,6 +278,9 @@ document.addEventListener('click', function (event) {
   if (event.target.className.split(" ")[0] ==='edit-btn') {
     editTask(event.target.getAttribute("data-key"));
   } else if (event.target.className.split(" ")[0] ==='del-btn') {
+    console.log('test');
+    document.getElementById("confirm-delete-button").setAttribute("data-key", event.target.getAttribute("data-key"));
+  } else if (event.target.className.split(" ")[0] ==='done-del-btn') {
     document.getElementById("confirm-delete-button").setAttribute("data-key", event.target.getAttribute("data-key"));
   } else if (event.target.className.split(" ")[0] ==='comp-btn') {
     compTask(event.target.getAttribute("data-key"));
