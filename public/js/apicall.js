@@ -81,6 +81,10 @@ function compTask(id){
   todoApiCall({'callName':'comp' ,'request':{id, 'comp_date':getToday()}, 'method':'PUT'});
 }
 
+function uncompTask(id){
+  todoApiCall({'callName':'comp' ,'request':{id, 'comp_date':'uncomp'}, 'method':'PUT'});
+}
+
 function editTask(todo_id){
   //empty values in Edit Modal
   document.getElementById('todo-title-edit-input').value = null;
@@ -121,7 +125,7 @@ function todoApiCall(apiJson){
     request.open('GET', '/api/todo?'+reqStr, true);
   } else if(apiJson.callName === 'delete'){
     request.open('DELETE', '/api/todo/'+apiJson.request['id'], true);
-  } else if(apiJson.callName === 'update' || apiJson.callName === 'comp'){
+  } else if(apiJson.callName === 'update' || apiJson.callName === 'comp' || apiJson.callName === 'uncomp'){
     request.open('PUT', '/api/todo/'+apiJson.request['id']+'?'+reqStr, true);
   } else if(apiJson.callName === 'add'){
     request.open('GET', '/api/todo/create'+'?'+reqStr, true);
@@ -143,7 +147,7 @@ function todoApiCall(apiJson){
           reflectAddRequest(responseJson.data);
         } else if(apiJson.callName == 'update'){
           reflectUpdateRequest(responseJson);
-        } else if(apiJson.callName == 'comp'){
+        } else if(apiJson.callName == 'comp' || apiJson.callName == 'uncomp'){
           reflectCompRequest(responseJson);
         } else if(apiJson.callName == 'delete'){
           reflectDeleteRequest(responseJson.data);
@@ -228,7 +232,7 @@ function reflectDoneList(data){
           <td style="width:120px;">${priority}</td>
           <td style="width:190px;">
             <button type="button" class="del-btn btn btn-default" data-toggle="modal" data-target="#delModal" data-key="${item.id}">削除</button>
-            <button type="button" class="uncomp-btn btn btn-default" data-toggle="modal" data-target="#editModal" data-key="${item.id}">未完にする</button>
+            <button type="button" class="uncomp-btn btn btn-default" data-key="${item.id}">未完にする</button>
           </td>`;
       var listElement = document.getElementById("done-table").appendChild(doneList);
     });
@@ -302,6 +306,8 @@ document.addEventListener('click', function (event) {
     document.getElementById("confirm-delete-button").setAttribute("data-key", event.target.getAttribute("data-key"));
   } else if (event.target.className.split(" ")[0] ==='comp-btn') {
     compTask(event.target.getAttribute("data-key"));
+  } else if (event.target.className.split(" ")[0] ==='uncomp-btn') {
+    uncompTask(event.target.getAttribute("data-key"));
   } else if (event.target.id === 'confirm-delete-button'){
     deleteTask(event.target.getAttribute("data-key"));
   } else if (event.target.id === 'confirm-update-button'){

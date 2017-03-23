@@ -106,7 +106,11 @@ class TodoController extends Controller
      */
     public function update(Request $request, Todo $todo)
     {
-      if(isset($request->comp_date)){
+      if( $request->comp_date === 'uncomp' ){
+        $message = 'を未完にしました。';
+        $success = Todo::where('id', $todo->id)
+          ->update(['comp_date' => null]);
+      } elseif(isset($request->comp_date)){
         $message = 'を完了しました。';
         $success = Todo::where('id', $todo->id)
           ->update(['comp_date' => $request->comp_date]);
