@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<div id="main">
 <div id="user-data" data-id="{{$id}}"></div>
 <div class="container">
     <div class="row">
@@ -165,7 +164,6 @@
   </div>
 </div>
 
-</div>
 <script src="{{ asset('js/apicall.js') }}"></script>
 <script src="{{ asset('js/bootstrap.js') }}"></script>
 @endsection

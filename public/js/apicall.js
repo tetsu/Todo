@@ -13,7 +13,6 @@ function showSuccessMessage(message){
   document.getElementById('api-return-message').innerHTML = `${message}`;
   document.getElementById('api-alert').className = "alert alert-success";
   document.getElementById('api-alert').setAttribute("style", "visibility:visible;");
-  //setInterval(document.getElementById('api-alert').setAttribute("style", "visibility:hidden;"), 5000);
 }
 
 function refreshTodoList(){
@@ -186,8 +185,8 @@ function reflectGetList(data){
       var todoList = document.createElement("tr");
       todoList.id = `todo-${item.id}`;
       todoList.innerHTML =
-         `<th style="width:40px;" scope="row"><input type="checkbox" name="todo-checkbox" value="${item.id}"></th>
-          <th style="width:40px;" scope="row"><input type="checkbox" name="todo-checkbox" value="${item.id}"></th>
+         `<th style="width:40px;" scope="row"><input id="todo-del-checkbox-${item.id}" class="todo-del-checkbox" type="checkbox" name="todo-del-checkbox" data-key="${item.id}" value="${item.id}"></th>
+          <th style="width:40px;" scope="row"><input id="todo-comp-checkbox-${item.id}" class="todo-comp-checkbox" type="checkbox" name="todo-comp-checkbox" data-key="${item.id}" value="${item.id}"></th>
           <td>${item.title}</th>
           <td style="width:100px;">${item.due_date}</td>
           <td style="width:120px;">${priority}</td>
@@ -226,8 +225,8 @@ function reflectDoneList(data){
       var doneList = document.createElement("tr");
       doneList.id = `todo-${item.id}`;
       doneList.innerHTML =
-         `<th style="width:40px;" scope="row"><input class="done-checkbox" type="checkbox" name="done-del-checkbox" value="${item.id}"></th>
-          <th style="width:40px;" scope="row"><input type="checkbox" name="done-uncomp-checkbox" value="${item.id}"></th>
+         `<th style="width:40px;" scope="row"><input id="done-del-checkbox-${item.id}" class="done-del-checkbox" type="checkbox" name="done-del-checkbox" data-key="${item.id}" value="${item.id}"></th>
+          <th style="width:40px;" scope="row"><input id="done-uncomp-checkbox-${item.id}" class="done-uncomp-checkbox" type="checkbox" name="done-uncomp-checkbox" data-key="${item.id}" value="${item.id}"></th>
           <td>${item.title}</td>
           <td style="width:100px;">${item.due_date}</td>
           <td style="width:100px;">${item.comp_date}</td>
@@ -310,6 +309,9 @@ document.addEventListener('click', function (event) {
     compTask(event.target.getAttribute("data-key"));
   } else if (event.target.className.split(" ")[0] ==='uncomp-btn') {
     uncompTask(event.target.getAttribute("data-key"));
+  } else if (event.target.type === 'checkbox') {
+    console.log('checkbox clicked');
+    //uncheckTheOther();
   } else if (event.target.id === 'confirm-delete-button'){
     deleteTask(event.target.getAttribute("data-key"));
   } else if (event.target.id === 'confirm-update-button'){
