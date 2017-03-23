@@ -29,7 +29,7 @@
           <tbody id="todo-table">
           </tbody>
         </table>
-        <div id="todo-list-spinner" style="text-align: center;">
+        <div id="todo-table-spinner" style="text-align: center;">
           <i class="fa fa-refresh fa-spin" style="font-size:24px"/></i>
         </div>
       </div>
@@ -53,7 +53,7 @@
           <tbody id="done-table">
           </tbody>
         </table>
-        <div id="done-list-spinner" style="text-align: center;">
+        <div id="done-table-spinner" style="text-align: center;">
           <i class="fa fa-refresh fa-spin" style="font-size:24px"/></i>
         </div>
       </div>

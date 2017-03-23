@@ -24,7 +24,7 @@ function refreshTodoList(){
   }
 
   user_id = document.getElementById('user-data').getAttribute("data-id");
-  todoLiStSpinner = document.getElementById('todo-list-spinner');
+  todoLiStSpinner = document.getElementById('todo-table-spinner');
 
   //show spinner
   todoLiStSpinner.innerHTML = `<i class="fa fa-refresh fa-spin" style="font-size:24px"/></i>`;
@@ -40,7 +40,7 @@ function refreshDoneList(){
   }
 
   user_id = document.getElementById('user-data').getAttribute("data-id");
-  doneListSpinner = document.getElementById('done-list-spinner');
+  doneListSpinner = document.getElementById('done-table-spinner');
 
   //show spinner
   doneListSpinner.innerHTML = `<i class="fa fa-refresh fa-spin" style="font-size:24px"/></i>`;
@@ -158,7 +158,7 @@ function todoApiCall(apiJson){
 }
 
 function reflectGetList(data){
-  todoLiStSpinner = document.getElementById('todo-list-spinner');
+  todoLiStSpinner = document.getElementById('todo-table-spinner');
   if(data.length > 0){
     data.map(function(item){
       if(typeof item.due_date == 'undefined') item.due_date = "未定";
@@ -191,13 +191,13 @@ function reflectGetList(data){
     while (todoLiStSpinner.firstChild) {
       todoLiStSpinner.removeChild(todoLiStSpinner.firstChild);
     }
-    document.getElementById('todo-list-spinner').innerHTML = `未完了タスクはありません`;
+    document.getElementById('todo-table-spinner').innerHTML = `未完了タスクはありません`;
   }
 
 }
 
 function reflectDoneList(data){
-  doneListSpinner = document.getElementById('done-list-spinner');
+  doneListSpinner = document.getElementById('done-table-spinner');
   if(data.length > 0){
     data.map(function(item){
       if(typeof item.due_date == 'undefined') item.due_date = "未定";
@@ -230,7 +230,7 @@ function reflectDoneList(data){
     while (doneListSpinner.firstChild) {
       doneListSpinner.removeChild(doneListSpinner.firstChild);
     }
-    document.getElementById('done-list-spinner').innerHTML = `完了タスクはありません`;
+    document.getElementById('done-table-spinner').innerHTML = `完了タスクはありません`;
   }
 
 }
@@ -243,7 +243,7 @@ function reflectAddRequest(data){
 
   //Reset Add Task form
   document.getElementById('title-add-input').value = "";
-  document.getElementById('due-date-add-input').value = Date.now();
+  //document.getElementById('due-date-add-input').value = Date.now();
   document.getElementById(`priority-add-input-5`).checked = true;
   document.getElementById(`priority-add-input-4`).checked = false;
   document.getElementById(`priority-add-input-3`).checked = false;
@@ -260,9 +260,13 @@ function reflectUpdateRequest(res){
 
 function reflectDeleteRequest(data){
   targetTable = data.comp_date ? `done-table` : `todo-table`;
-  document.getElementById(targetTable).removeChild(
-    document.getElementById(`todo-${data.id}`)
-  );
+  document.getElementById(targetTable).removeChild(document.getElementById(`todo-${data.id}`));
+  if(!document.getElementById(targetTable).firstChild){
+    var mi = '';
+    if(targetTable === 'todo-table') mi = '未';
+    document.getElementById(`${targetTable}-spinner`).innerHTML = `${mi}完了タスクはありません`;
+  }
+  //data.comp_date ? refreshDoneList() : refreshTodoList() ;
   showSuccessMessage(`「${data.title}」を削除しました。`);
 }
 
@@ -278,9 +282,6 @@ document.addEventListener('click', function (event) {
   if (event.target.className.split(" ")[0] ==='edit-btn') {
     editTask(event.target.getAttribute("data-key"));
   } else if (event.target.className.split(" ")[0] ==='del-btn') {
-    console.log('test');
-    document.getElementById("confirm-delete-button").setAttribute("data-key", event.target.getAttribute("data-key"));
-  } else if (event.target.className.split(" ")[0] ==='done-del-btn') {
     document.getElementById("confirm-delete-button").setAttribute("data-key", event.target.getAttribute("data-key"));
   } else if (event.target.className.split(" ")[0] ==='comp-btn') {
     compTask(event.target.getAttribute("data-key"));
