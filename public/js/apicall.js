@@ -3,6 +3,13 @@ window.onload = function(){
   refreshDoneList();
 }
 
+function showErrorMessage(data){
+  //show success message
+  document.getElementById('api-return-message').innerHTML = `${data.message}`;
+  document.getElementById('api-alert').className = "alert alert-danger";
+  document.getElementById('api-alert').setAttribute("style", "visibility:visible;");
+}
+
 function refreshTodoList(){
   //remove current todo items
   todoTable = document.getElementById('todo-table');
@@ -35,21 +42,29 @@ function refreshDoneList(){
   todoApiCall({'callName':'done' ,'request':{user_id, 'done':1}, method:'GET' });
 }
 
-function addTask(user_id){
-  if(document.getElementById('new_event_group').value !== ""){
-    todoApiCall({
-      'callName':'add',
-      'request':{event_id, 'value':document.getElementById('new_event_group').value},
-      'method':'POST'
-    });
-  } else {
-    console.log("Input value is empty.");
+function addTask(){
+  var title = document.getElementById('title-add-input').value;
+  var due_date = document.getElementById('due-date-add-input').value;
+  var user_id = document.getElementById('user-data').getAttribute("data-id");
+  for(var i=1;i<=5;i++){
+    if (document.getElementById(`priority-add-input-${i}`).checked) {
+      var priority = document.getElementById(`priority-add-input-${i}`).value;
+    }
   }
-
+  todoApiCall({'callName':'add' ,'request':{title, due_date, user_id, priority}, 'method':'GET'});
 }
 
-function updateTask(update_data){
-  todoApiCall({'callName':'update' ,'request':update_data, 'method':'PUT'});
+function updateTask(){
+  var id = document.getElementById('confirm-update-button').getAttribute("data-key");
+  var title = document.getElementById('todo-title-edit-input').value;
+  var due_date = document.getElementById('due-date-edit-input').value;
+  var user_id = document.getElementById('user-data').getAttribute("data-id");
+  for(var i=1;i<=5;i++){
+    if (document.getElementById(`priority-edit-input-${i}`).checked) {
+      var priority = document.getElementById(`priority-edit-input-${i}`).value;
+    }
+  }
+  todoApiCall({'callName':'update' ,'request':{id, title, due_date, user_id, priority}, 'method':'PUT'});
 }
 
 function deleteTask(todo_id){
@@ -93,6 +108,8 @@ function todoApiCall(apiJson){
     request.open('DELETE', '/api/todo/'+apiJson.request['id'], true);
   } else if(apiJson.callName === 'update'){
     request.open('PUT', '/api/todo/'+apiJson.request['id']+reqStr, true);
+  } else if(apiJson.callName === 'add'){
+    request.open('GET', '/api/todo/create'+reqStr, true);
   } else {
     request.open('GET', '/api/todo/'+apiJson.callName+reqStr, true);
   }
@@ -116,13 +133,22 @@ function todoApiCall(apiJson){
         }
       }
     } else {
-      console.log('error');
+      if(responseJson.status === 'fail' && responseJson.message){
+        showErrorMessage(responseJson);
+      } else {
+        console.log('error');
+      }
     }
   };
   request.onerror = function() {
     console.log('error');
   };
-  request.send();
+  if(apiJson.method === 'GET'){
+    request.send();
+  } else {
+    request.send(JSON.stringify(apiJson.requst));
+  }
+
 }
 
 function reflectGetList(data){
@@ -204,16 +230,22 @@ function reflectDoneList(data){
 }
 
 function reflectAddRequest(data){
-    var newList = document.createElement("li");
-    newList.id = `event_group_${data.event_group_id}`;
-    newList.innerHTML =
-      `<input id="event_group_input_${data.event_group_id}" value="${data.name}"></input>
-      <button onclick="updateEventGroupName(${data.event_group_id})">イベントグループ名更新</button>
-      <button onclick="deleteEventGroup(${data.event_group_id})">削除</button>`;
-    var listElement = document.getElementById("event-group-list").appendChild(newList);
-    document.getElementById('new_event_group').value = "";
-    document.getElementById('event_group_message').innerHTML = "イベントグループ追加成功。";
-  }
+  //show success message
+  document.getElementById('api-return-message').innerHTML = `「${data.title}」を作成しました。`;
+  document.getElementById('api-alert').className = "alert alert-success";
+  document.getElementById('api-alert').setAttribute("style", "visibility:visible;");
+
+  //Reset Add Task form
+  document.getElementById('title-add-input').value = "";
+  document.getElementById('due-date-add-input').value = Date.now();
+  document.getElementById(`priority-add-input-5`).checked = true;
+  document.getElementById(`priority-add-input-4`).checked = false;
+  document.getElementById(`priority-add-input-3`).checked = false;
+  document.getElementById(`priority-add-input-2`).checked = false;
+  document.getElementById(`priority-add-input-1`).checked = false;
+
+  refreshTodoList();
+}
 
 function reflectUpdateRequest(data){
   refreshTodoList();
@@ -235,7 +267,7 @@ function reflectEditRequest(data){
   document.getElementById('todo-title-edit-input').value = data.title;
   document.getElementById('due-date-edit-input').value = data.due_date;
   document.getElementById(`priority-edit-input-${data.priority}`).setAttribute("checked", true);
-  document.getElementById("update-button").setAttribute("data-key", data.id);
+  document.getElementById("confirm-update-button").setAttribute("data-key", data.id);
 
 }
 
@@ -243,21 +275,14 @@ document.addEventListener('click', function (event) {
   if (event.target.className.split(" ")[0] ==='edit-btn') {
     editTask(event.target.getAttribute("data-key"));
   } else if (event.target.className.split(" ")[0] ==='del-btn') {
-    document.getElementById("delete-button").setAttribute("data-key", event.target.getAttribute("data-key"));
+    document.getElementById("confirm-delete-button").setAttribute("data-key", event.target.getAttribute("data-key"));
   } else if (event.target.className.split(" ")[0] ==='comp-btn') {
     compTask(event.target.getAttribute("data-key"));
-  } else if (event.target.id === 'delete-button'){
+  } else if (event.target.id === 'confirm-delete-button'){
     deleteTask(event.target.getAttribute("data-key"));
-  } else if (event.target.id === 'update-button'){
-    var id = event.target.getAttribute("data-key");
-    var title = document.getElementById('todo-title-edit-input').value;
-    var due_date = document.getElementById('due-date-edit-input').value;
-    var user_id = document.getElementById('user-data').getAttribute("data-id");
-    for(var i=1;i<=5;i++){
-      if (document.getElementById(`priority-edit-input-${i}`).checked) {
-        var priority = document.getElementById(`priority-edit-input-${i}`).value;
-      }
-    }
-    return updateTask({id, title, due_date, priority, user_id});
+  } else if (event.target.id === 'confirm-update-button'){
+    updateTask();
+  } else if (event.target.id === 'confirm-add-button'){
+    addTask();
   }
 });

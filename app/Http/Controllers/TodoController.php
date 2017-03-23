@@ -44,9 +44,24 @@ class TodoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $todo = new Todo;
+        $todo->title = $request->title;
+        $todo->due_date = $request->due_date;
+        $todo->priority = $request->priority;
+        $todo->user_id = $request->user_id;
+        if($todo->save()){
+          return response()->json([
+            'status'=>'success',
+            'data' => $todo,
+          ]);
+        } else {
+          return response()->json([
+            'status'=>'fail',
+            'message'=>'データベースエラー'
+          ]);
+        }
     }
 
     /**
@@ -57,13 +72,7 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
-        $todo = new Todo;
-        $todo->title = $request->title;
-        $todo->content = $request->content;
-        $todo->starts_at = $request->starts_at;
-        $todo->ends_at = $request->ends_at;
-        $todo->user_id = $request->id;
-        $todo->save();
+        return $request;
     }
 
     /**
@@ -108,7 +117,8 @@ class TodoController extends Controller
         ]);
       } else {
         return response()->json([
-          'status'=>'fail'
+          'status'=>'fail',
+          'message'=>'データベースエラー'
         ]);
       }
 
@@ -124,10 +134,11 @@ class TodoController extends Controller
     //public function destroy(Request $request)
     {
       $copy = $todo;
-      $todo = Todo::destroy($todo->id);
+      $success = Todo::destroy($todo->id);
       return response()->json([
         'status'=>'success',
         'data' => $copy,
+        'message' => '「'.$copy->title.'」を削除しました。'
       ]);
     }
 }

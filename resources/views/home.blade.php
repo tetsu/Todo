@@ -74,27 +74,27 @@
         <form>
           <div class="form-group">
             <label for="recipient-name" class="form-control-label">タスク</label>
-            <input type="text" class="form-control" id="todo-title-input">
+            <input id="title-add-input" type="text" class="form-control" id="todo-title-input">
           </div>
           <div class="form-group">
             <label for="recipient-name" class="form-control-label">完了予定日</label>
-            <input type="date" class="form-control" min="{{date("Y-m-d")}}" max="2050-12-31" value="{{date("Y-m-d")}}" id="due-date-input">
+            <input id="due-date-add-input" type="date" class="form-control" min="{{date("Y-m-d")}}" max="2050-12-31" value="{{date("Y-m-d")}}">
           </div>
           <div class="form-group">
             <label for="message-text" class="form-control-label">優先度</label>
             <div>
-              <input type="radio" name="priority" value="5"> 最重要
-              <input type="radio" name="priority" value="4"> 重要
-              <input type="radio" name="priority" value="3"> 普通
-              <input type="radio" name="priority" value="2"> 重要でない
-              <input type="radio" name="priority" value="1"> 全く重要でない
+              <input id="priority-add-input-5" type="radio" name="priority" value="5" checked> 最重要
+              <input id="priority-add-input-4" type="radio" name="priority" value="4"> 重要
+              <input id="priority-add-input-3" type="radio" name="priority" value="3"> 普通
+              <input id="priority-add-input-2" type="radio" name="priority" value="2"> 重要でない
+              <input id="priority-add-input-1" type="radio" name="priority" value="1"> 全く重要でない
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-        <button type="button" class="btn btn-primary">作成</button>
+        <button id="confirm-add-button" type="button" class="btn btn-primary" data-dismiss="modal">作成</button>
       </div>
     </div>
   </div>
@@ -134,7 +134,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-        <button id="update-button" type="button" class="btn btn-primary" data-dismiss="modal">更新</button>
+        <button id="confirm-update-button" type="button" class="btn btn-primary" data-dismiss="modal">更新</button>
       </div>
     </div>
   </div>
@@ -156,7 +156,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" id="delete-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-        <button type="button" id="delete-button" class="btn btn-primary" data-dismiss="modal">削除</button>
+        <button type="button" id="confirm-delete-button" class="btn btn-primary" data-dismiss="modal">削除</button>
       </div>
     </div>
   </div>
