@@ -7,12 +7,18 @@ function showErrorMessage(message){
   document.getElementById('api-return-message').innerHTML = `${message}`;
   document.getElementById('api-alert').className = "alert alert-danger";
   document.getElementById('api-alert').setAttribute("style", "visibility:visible;");
+  setTimeout(function(){
+    document.getElementById('api-alert').setAttribute("style", "visibility:hidden;");
+  }, 5000);
 }
 
 function showSuccessMessage(message){
   document.getElementById('api-return-message').innerHTML = `${message}`;
   document.getElementById('api-alert').className = "alert alert-success";
   document.getElementById('api-alert').setAttribute("style", "visibility:visible;");
+  setTimeout(function(){
+    document.getElementById('api-alert').setAttribute("style", "visibility:hidden;");
+  }, 5000);
 }
 
 function refreshTodoList(){
