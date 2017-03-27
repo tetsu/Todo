@@ -148,6 +148,16 @@ function doneCheckboxActions(){
   }
 }
 
+function todoGroupDelActions(){
+  var checkedItems = getCheckedItems('todo');
+  document.getElementById('group-delete-confirm-button').setAttribute('data-key', `[${checkedItems}]`);
+}
+
+function doneGroupDelActions(){
+  var checkedItems = getCheckedItems('done');
+  document.getElementById('group-delete-confirm-button').setAttribute('data-key', `[${checkedItems}]`);
+}
+
 function todoApiCall(apiJson){
   //encodeURIComponent
   firstLoop = true;
@@ -355,9 +365,9 @@ document.addEventListener('click', function (event) {
   } else if (event.target.className.split(" ")[0] ==='uncomp-btn') {
     uncompTask(event.target.getAttribute("data-key"));
   } else if (event.target.className.split(" ")[0] ==='todo-group-del-btn') {
-    getCheckedItems('todo');
+    todoGroupDelActions();
   } else if (event.target.className.split(" ")[0] ==='done-group-del-btn') {
-    getCheckedItems('done');
+    doneGroupDelActions();
   } else if (event.target.className.split(" ")[0] ==='group-comp-btn') {
     getCheckedItems('todo');
   } else if (event.target.className.split(" ")[0] ==='group-uncomp-btn') {

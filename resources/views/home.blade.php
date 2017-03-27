@@ -193,8 +193,8 @@
         タスクをまとめて削除しますか？
       </div>
       <div class="modal-footer">
-        <button type="button" id="delete-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-        <button type="button" id="confirm-delete-button" class="btn btn-primary" data-dismiss="modal">削除</button>
+        <button type="button" id="group-delete-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+        <button type="button" id="group-delete-confirm-button" class="btn btn-primary" data-dismiss="modal">削除</button>
       </div>
     </div>
   </div>
@@ -214,8 +214,8 @@
         タスクをまとめて完了にしますか？
       </div>
       <div class="modal-footer">
-        <button type="button" id="delete-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-        <button type="button" id="confirm-delete-button" class="btn btn-primary" data-dismiss="modal">削除</button>
+        <button type="button" id="group-comp-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+        <button type="button" id="group-comp-confirm-button" class="btn btn-primary" data-dismiss="modal">削除</button>
       </div>
     </div>
   </div>
@@ -235,8 +235,8 @@
         タスクをまとめて未完にしますか？
       </div>
       <div class="modal-footer">
-        <button type="button" id="delete-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-        <button type="button" id="confirm-delete-button" class="btn btn-primary" data-dismiss="modal">削除</button>
+        <button type="button" id="group-uncomp-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+        <button type="button" id="group-uncomp-confirm-button" class="btn btn-primary" data-dismiss="modal">削除</button>
       </div>
     </div>
   </div>
