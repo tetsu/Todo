@@ -70,6 +70,7 @@ function updateTask(){
   var id = document.getElementById('confirm-update-button').getAttribute("data-key");
   var title = document.getElementById('todo-title-edit-input').value;
   var due_date = document.getElementById('due-date-edit-input').value;
+  var comp_date = document.getElementById('comp-date-edit-input').value;
   var user_id = document.getElementById('user-data').getAttribute("data-id");
   for(var i=1;i<=5;i++){
     if (document.getElementById(`priority-edit-input-${i}`).checked) {
@@ -77,7 +78,7 @@ function updateTask(){
     }
   }
   var detail = document.getElementById('detail-edit-input').value;
-  todoApiCall({'callName':'update' ,'request':{id, title, due_date, user_id, priority, detail}, 'method':'PUT'});
+  todoApiCall({'callName':'update' ,'request':{id, title, due_date, comp_date, user_id, priority, detail}, 'method':'PUT'});
 }
 
 function deleteTask(todo_id){
@@ -278,6 +279,7 @@ function reflectAddRequest(data){
 
 function reflectUpdateRequest(res){
   refreshTodoList();
+  refreshDoneList();
   showSuccessMessage(`${res.message}`);
 }
 

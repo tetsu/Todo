@@ -120,6 +120,7 @@ class TodoController extends Controller
           ->update([
             'title' => $request->title,
             'due_date'=>$request->due_date,
+            'comp_date'=>$request->comp_date,
             'priority'=>$request->priority,
             'detail'=>$request->detail
           ]);
