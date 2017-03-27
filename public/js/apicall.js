@@ -202,7 +202,7 @@ function reflectGetList(data){
           <td style="width:120px;">${priority}</td>
           <td style="width:190px;">
             <button type="button" class="del-btn btn btn-default" data-toggle="modal" data-target="#delModal" data-key="${item.id}">削除</button>
-            <button type="button" class="edit-btn btn btn-default" data-toggle="modal" data-target="#editTodoModal" data-key="${item.id}">編集</button>
+            <button type="button" class="edit-btn btn btn-default" data-toggle="modal" data-target="#editTodoModal" data-key="${item.id}">詳細</button>
             <button type="button" class="comp-btn btn btn-success" data-toggle="modal" data-target="#compModal" data-key="${item.id}">完了</button>
           </td>`;
       var listElement = document.getElementById("todo-table").appendChild(todoList);

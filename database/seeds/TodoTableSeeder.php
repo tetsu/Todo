@@ -17,11 +17,11 @@ class TodoTableSeeder extends Seeder
       for($i=1; $i<101; $i++){
         Todo::create([
           'title' => 'タスク'.$i,
-          'user_id' => rand(1,5),
+          'user_id' => rand(1,6),
           'detail' => $faker->text,
           'priority' => rand(1,5),
           'due_date' => $faker->date($format='Y-m-d'),
-          'comp_date' => rand(0,5)==0 ? $faker->date($format='Y-m-d') : null
+          'comp_date' => rand(0,3)==0 ? $faker->date($format='Y-m-d') : null
         ]);
       }
     }

@@ -111,9 +111,22 @@ class TodoController extends Controller
         $success = Todo::where('id', $todo->id)
           ->update(['comp_date' => null]);
       } elseif(isset($request->comp_date)){
-        $message = 'を完了しました。';
-        $success = Todo::where('id', $todo->id)
-          ->update(['comp_date' => $request->comp_date]);
+        if($request->title && $request->due_date && $request->comp_date && $request->priority && $request->detail){
+          $message = 'を更新しました。';
+          $success = Todo::where('id', $todo->id)
+            ->update([
+              'title' => $request->title,
+              'due_date'=>$request->due_date,
+              'comp_date'=>$request->comp_date,
+              'priority'=>$request->priority,
+              'detail'=>$request->detail
+            ]);
+        } else {
+          $message = 'を完了しました。';
+          $success = Todo::where('id', $todo->id)
+            ->update(['comp_date' => $request->comp_date]);
+        }
+
       } elseif(isset($request->title) && isset($request->due_date) && isset($request->priority)) {
         $message = 'を更新しました。';
         $success = Todo::where('id', $todo->id)
