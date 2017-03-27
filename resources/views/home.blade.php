@@ -95,6 +95,10 @@
               <input id="priority-add-input-1" type="radio" name="priority" value="1"> 全く重要でない
             </div>
           </div>
+          <div class="form-group">
+            <label for="recipient-name" class="form-control-label">詳細</label>
+            <textarea class="form-control" id="detail-add-input"></textarea>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
@@ -106,7 +110,7 @@
 </div>
 
 <!-- TODO編集モーダル -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="editTodoModal" tabindex="-1" role="dialog" aria-labelledby="editTodoModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -126,6 +130,10 @@
             <input id="due-date-edit-input" type="date" class="form-control">
           </div>
           <div class="form-group">
+            <label for="recipient-name" class="form-control-label">完了日</label>
+            <input id="comp-date-edit-input" type="date" class="form-control">
+          </div>
+          <div class="form-group">
             <label for="message-text" class="form-control-label">優先度</label>
             <div>
               <input id="priority-edit-input-5" class="priority-edit-input" type="radio" name="priority" value="5"> 最重要
@@ -134,6 +142,10 @@
               <input id="priority-edit-input-2" class="priority-edit-input" type="radio" name="priority" value="2"> 重要でない
               <input id="priority-edit-input-1" class="priority-edit-input" type="radio" name="priority" value="1"> 全く重要でない
             </div>
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="form-control-label">詳細</label>
+            <textarea class="form-control" id="detail-edit-input"></textarea>
           </div>
         </form>
       </div>
@@ -147,7 +159,7 @@
 
 
 <!-- TODO削除モーダル -->
-<div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="deleteTodoModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -166,6 +178,7 @@
     </div>
   </div>
 </div>
+
 
 <script src="{{ asset('js/apicall.js') }}"></script>
 <script src="{{ asset('js/bootstrap.js') }}"></script>

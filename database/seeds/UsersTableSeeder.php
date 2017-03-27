@@ -20,6 +20,12 @@ class UsersTableSeeder extends Seeder
           'password' => bcrypt('secret')
       ]);
 
+      User::create([
+          'name' => 'テストユーザー',
+          'email' => 'test@test.com',
+          'password' => bcrypt('secret')
+      ]);
+
       for($i=0; $i<4; $i++){
         User::create([
           'name' => $faker->name,

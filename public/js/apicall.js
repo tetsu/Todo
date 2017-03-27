@@ -62,7 +62,8 @@ function addTask(){
       var priority = document.getElementById(`priority-add-input-${i}`).value;
     }
   }
-  todoApiCall({'callName':'add' ,'request':{title, due_date, user_id, priority}, 'method':'GET'});
+  var detail = document.getElementById('detail-add-input').value;
+  todoApiCall({'callName':'add' ,'request':{title, due_date, user_id, priority, detail}, 'method':'GET'});
 }
 
 function updateTask(){
@@ -75,7 +76,8 @@ function updateTask(){
       var priority = document.getElementById(`priority-edit-input-${i}`).value;
     }
   }
-  todoApiCall({'callName':'update' ,'request':{id, title, due_date, user_id, priority}, 'method':'PUT'});
+  var detail = document.getElementById('detail-edit-input').value;
+  todoApiCall({'callName':'update' ,'request':{id, title, due_date, user_id, priority, detail}, 'method':'PUT'});
 }
 
 function deleteTask(todo_id){
@@ -94,6 +96,7 @@ function editTask(todo_id){
   //empty values in Edit Modal
   document.getElementById('todo-title-edit-input').value = null;
   document.getElementById('due-date-edit-input').value = null;
+  document.getElementById('detail-edit-input').value = null;
   document.getElementsByClassName('priority-edit-input').checked=false;
 
   //API Call
@@ -197,7 +200,7 @@ function reflectGetList(data){
           <td style="width:120px;">${priority}</td>
           <td style="width:190px;">
             <button type="button" class="del-btn btn btn-default" data-toggle="modal" data-target="#delModal" data-key="${item.id}">削除</button>
-            <button type="button" class="edit-btn btn btn-default" data-toggle="modal" data-target="#editModal" data-key="${item.id}">編集</button>
+            <button type="button" class="edit-btn btn btn-default" data-toggle="modal" data-target="#editTodoModal" data-key="${item.id}">編集</button>
             <button type="button" class="comp-btn btn btn-success" data-toggle="modal" data-target="#compModal" data-key="${item.id}">完了</button>
           </td>`;
       var listElement = document.getElementById("todo-table").appendChild(todoList);
@@ -236,7 +239,7 @@ function reflectDoneList(data){
           <td style="width:120px;">${priority}</td>
           <td style="width:190px;">
             <button type="button" class="del-btn btn btn-default" data-toggle="modal" data-target="#delModal" data-key="${item.id}">削除</button>
-            <button type="button" class="edit-btn btn btn-default" data-toggle="modal" data-target="#editModal" data-key="${item.id}">編集</button>
+            <button type="button" class="edit-btn btn btn-default" data-toggle="modal" data-target="#editTodoModal" data-key="${item.id}">編集</button>
             <button type="button" class="uncomp-btn btn btn-default" data-key="${item.id}">未完</button>
           </td>`;
       var listElement = document.getElementById("done-table").appendChild(doneList);
@@ -300,6 +303,7 @@ function reflectEditRequest(data){
   document.getElementById('todo-title-edit-input').value = data.title;
   document.getElementById('due-date-edit-input').value = data.due_date;
   document.getElementById(`priority-edit-input-${data.priority}`).setAttribute("checked", true);
+  document.getElementById('detail-edit-input').value = data.detail;
   document.getElementById("confirm-update-button").setAttribute("data-key", data.id);
 
 }

@@ -18,6 +18,7 @@ class TodoTableSeeder extends Seeder
         Todo::create([
           'title' => 'タスク'.$i,
           'user_id' => rand(1,5),
+          'detail' => $faker->text,
           'priority' => rand(1,5),
           'due_date' => $faker->date($format='Y-m-d'),
           'comp_date' => rand(0,5)==0 ? $faker->date($format='Y-m-d') : null
