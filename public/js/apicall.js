@@ -191,8 +191,7 @@ function reflectGetList(data){
       var todoList = document.createElement("tr");
       todoList.id = `todo-${item.id}`;
       todoList.innerHTML =
-         `<th style="width:40px;" scope="row"><input id="todo-del-checkbox-${item.id}" class="todo-del-checkbox" type="checkbox" name="todo-del-checkbox" data-key="${item.id}" value="${item.id}"></th>
-          <th style="width:40px;" scope="row"><input id="todo-comp-checkbox-${item.id}" class="todo-comp-checkbox" type="checkbox" name="todo-comp-checkbox" data-key="${item.id}" value="${item.id}"></th>
+         `<th style="width:120px;" scope="row"><input id="todo-del-checkbox-${item.id}" class="todo-del-checkbox" type="checkbox" name="todo-checkbox" data-key="${item.id}" value="${item.id}"></th>
           <td>${item.title}</th>
           <td style="width:100px;">${item.due_date}</td>
           <td style="width:120px;">${priority}</td>
@@ -231,15 +230,14 @@ function reflectDoneList(data){
       var doneList = document.createElement("tr");
       doneList.id = `todo-${item.id}`;
       doneList.innerHTML =
-         `<th style="width:40px;" scope="row"><input id="done-del-checkbox-${item.id}" class="done-del-checkbox" type="checkbox" name="done-del-checkbox" data-key="${item.id}" value="${item.id}"></th>
-          <th style="width:40px;" scope="row"><input id="done-uncomp-checkbox-${item.id}" class="done-uncomp-checkbox" type="checkbox" name="done-uncomp-checkbox" data-key="${item.id}" value="${item.id}"></th>
+         `<th style="width:120px;" scope="row"><input id="done-del-checkbox-${item.id}" class="done-del-checkbox" type="checkbox" name="done-checkbox" data-key="${item.id}" value="${item.id}"></th>
           <td>${item.title}</td>
-          <td style="width:100px;">${item.due_date}</td>
           <td style="width:100px;">${item.comp_date}</td>
           <td style="width:120px;">${priority}</td>
           <td style="width:190px;">
             <button type="button" class="del-btn btn btn-default" data-toggle="modal" data-target="#delModal" data-key="${item.id}">削除</button>
-            <button type="button" class="uncomp-btn btn btn-default" data-key="${item.id}">未完にする</button>
+            <button type="button" class="edit-btn btn btn-default" data-toggle="modal" data-target="#editModal" data-key="${item.id}">編集</button>
+            <button type="button" class="uncomp-btn btn btn-default" data-key="${item.id}">未完</button>
           </td>`;
       var listElement = document.getElementById("done-table").appendChild(doneList);
     });

@@ -19,8 +19,10 @@
         <table class="table table-striped">
           <thead class="thead-inverse">
             <tr>
-              <th><button class="btn btn-info btn-sm">削除</button></th>
-              <th><button class="btn btn-info btn-sm">完了</button></th>
+              <th>
+                <span><button class="btn btn-info btn-sm">完了</button></span>
+                <span><button class="btn btn-info btn-sm">削除</button></span>
+              </th>
               <th>未完タスク</th>
               <th>予定日</th>
               <th>優先度</th>
@@ -43,10 +45,11 @@
         <table class="table table-striped">
           <thead class="thead-inverse">
             <tr>
-              <th><button class="btn btn-info btn-sm">削除</button></th>
-              <th><button class="btn btn-info btn-sm">未完</button></th>
+              <th>
+                <span><button class="btn btn-info btn-sm">未完</button></span>
+                <span><button class="btn btn-info btn-sm">削除</button></span>
+              </th>
               <th>完了タスク</th>
-              <th>予定日</th>
               <th>完了日</th>
               <th>優先度</th>
               <th>操作</th>
