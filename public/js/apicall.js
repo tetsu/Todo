@@ -97,6 +97,7 @@ function editTask(todo_id){
   //empty values in Edit Modal
   document.getElementById('todo-title-edit-input').value = null;
   document.getElementById('due-date-edit-input').value = null;
+  document.getElementById('comp-date-edit-input').value = null;
   document.getElementById('detail-edit-input').value = null;
   document.getElementsByClassName('priority-edit-input').checked=false;
 
@@ -304,6 +305,7 @@ function reflectDeleteRequest(data){
 function reflectEditRequest(data){
   document.getElementById('todo-title-edit-input').value = data.title;
   document.getElementById('due-date-edit-input').value = data.due_date;
+  document.getElementById('comp-date-edit-input').value = data.comp_date;
   document.getElementById(`priority-edit-input-${data.priority}`).setAttribute("checked", true);
   document.getElementById('detail-edit-input').value = data.detail;
   document.getElementById("confirm-update-button").setAttribute("data-key", data.id);
