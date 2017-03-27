@@ -20,8 +20,8 @@
           <thead class="thead-inverse">
             <tr>
               <th>
-                <span><button class="btn btn-info btn-sm">完了</button></span>
-                <span><button class="btn btn-info btn-sm">削除</button></span>
+                <span><button id="todo-group-comp-btn" class="group-comp-btn btn btn-info btn-sm" data-toggle="modal" data-target="#groupCompModal" disabled>完了</button></span>
+                <span><button id="todo-group-del-btn" class="todo-group-del-btn btn btn-info btn-sm" data-toggle="modal" data-target="#groupDelModal" disabled>削除</button></span>
               </th>
               <th>未完タスク</th>
               <th>予定日</th>
@@ -46,8 +46,8 @@
           <thead class="thead-inverse">
             <tr>
               <th>
-                <span><button class="btn btn-info btn-sm">未完</button></span>
-                <span><button class="btn btn-info btn-sm">削除</button></span>
+                <span><button id="done-group-uncomp-btn" class="group-uncomp-btn btn btn-info btn-sm" data-toggle="modal" data-target="#groupUncompModal" disabled>未完</button></span>
+                <span><button id="done-group-del-btn" class="done-group-del-btn btn btn-info btn-sm" data-toggle="modal" data-target="#groupDelModal" disabled>削除</button></span>
               </th>
               <th>完了タスク</th>
               <th>完了日</th>
@@ -169,7 +169,70 @@
         </button>
       </div>
       <div class="modal-body" style="text-align: center;">
-        このTODOを削除しますか？
+        このタスクを削除しますか？
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="delete-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+        <button type="button" id="confirm-delete-button" class="btn btn-primary" data-dismiss="modal">削除</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- まとめ削除モーダル -->
+<div class="modal fade" id="groupDelModal" tabindex="-1" role="dialog" aria-labelledby="groupDelModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">タスク削除</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        タスクをまとめて削除しますか？
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="delete-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+        <button type="button" id="confirm-delete-button" class="btn btn-primary" data-dismiss="modal">削除</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- まとめ完了モーダル -->
+<div class="modal fade" id="groupCompModal" tabindex="-1" role="dialog" aria-labelledby="groupCompModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">タスクをまとめて完了</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        タスクをまとめて完了にしますか？
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="delete-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+        <button type="button" id="confirm-delete-button" class="btn btn-primary" data-dismiss="modal">削除</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- まとめ未完モーダル -->
+<div class="modal fade" id="groupUncompModal" tabindex="-1" role="dialog" aria-labelledby="groupUncompModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">タスクをまとめて未完にする</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        タスクをまとめて未完にしますか？
       </div>
       <div class="modal-footer">
         <button type="button" id="delete-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>

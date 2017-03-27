@@ -115,6 +115,39 @@ function getToday(){
   return `${yyyy}-${mm}-${dd}`;
 }
 
+function getCheckedItems(group_name){
+  var checkedItems = document.getElementsByClassName(`${group_name}-checkbox`);
+  var delKeys = [];
+  [].forEach.call(checkedItems, function (item) {
+    if(item.checked){
+      delKeys.push(item.getAttribute('data-key'));
+    }
+  });
+  return delKeys;
+}
+
+function todoCheckboxActions(){
+  var checkedItems = getCheckedItems('todo');
+  if(checkedItems.length > 0){
+    document.getElementById('todo-group-del-btn').disabled = "";
+    document.getElementById('todo-group-comp-btn').disabled = "";
+  } else {
+    document.getElementById('todo-group-del-btn').disabled = "true";
+    document.getElementById('todo-group-comp-btn').disabled = "true";
+  }
+}
+
+function doneCheckboxActions(){
+  var checkedItems = getCheckedItems('done');
+  if(checkedItems.length > 0){
+    document.getElementById('done-group-del-btn').disabled = "";
+    document.getElementById('done-group-uncomp-btn').disabled = "";
+  } else {
+    document.getElementById('done-group-del-btn').disabled = "true";
+    document.getElementById('done-group-uncomp-btn').disabled = "true";
+  }
+}
+
 function todoApiCall(apiJson){
   //encodeURIComponent
   firstLoop = true;
@@ -196,7 +229,7 @@ function reflectGetList(data){
       var todoList = document.createElement("tr");
       todoList.id = `todo-${item.id}`;
       todoList.innerHTML =
-         `<th style="width:120px;" scope="row"><input id="todo-del-checkbox-${item.id}" class="todo-del-checkbox" type="checkbox" name="todo-checkbox" data-key="${item.id}" value="${item.id}"></th>
+         `<th style="width:120px;" scope="row"><input id="todo-checkbox-${item.id}" class="todo-checkbox" type="checkbox" name="todo-checkbox" data-key="${item.id}" value="${item.id}"></th>
           <td>${item.title}</th>
           <td style="width:100px;">${item.due_date}</td>
           <td style="width:120px;">${priority}</td>
@@ -235,7 +268,7 @@ function reflectDoneList(data){
       var doneList = document.createElement("tr");
       doneList.id = `todo-${item.id}`;
       doneList.innerHTML =
-         `<th style="width:120px;" scope="row"><input id="done-del-checkbox-${item.id}" class="done-del-checkbox" type="checkbox" name="done-checkbox" data-key="${item.id}" value="${item.id}"></th>
+         `<th style="width:120px;" scope="row"><input id="done-checkbox-${item.id}" class="done-checkbox" type="checkbox" name="done-checkbox" data-key="${item.id}" value="${item.id}"></th>
           <td>${item.title}</td>
           <td style="width:100px;">${item.comp_date}</td>
           <td style="width:120px;">${priority}</td>
@@ -321,9 +354,22 @@ document.addEventListener('click', function (event) {
     compTask(event.target.getAttribute("data-key"));
   } else if (event.target.className.split(" ")[0] ==='uncomp-btn') {
     uncompTask(event.target.getAttribute("data-key"));
+  } else if (event.target.className.split(" ")[0] ==='todo-group-del-btn') {
+    getCheckedItems('todo');
+  } else if (event.target.className.split(" ")[0] ==='done-group-del-btn') {
+    getCheckedItems('done');
+  } else if (event.target.className.split(" ")[0] ==='group-comp-btn') {
+    getCheckedItems('todo');
+  } else if (event.target.className.split(" ")[0] ==='group-uncomp-btn') {
+    getCheckedItems('done');
+  } else if (event.target.className.split(" ")[0] ==='todo-checkbox') {
+    todoCheckboxActions();
+  } else if (event.target.className.split(" ")[0] ==='done-checkbox') {
+    doneCheckboxActions();
   } else if (event.target.type === 'checkbox') {
-    console.log('checkbox clicked');
+    //console.log('checkbox clicked');
     //uncheckTheOther();
+
   } else if (event.target.id === 'confirm-delete-button'){
     deleteTask(event.target.getAttribute("data-key"));
   } else if (event.target.id === 'confirm-update-button'){
