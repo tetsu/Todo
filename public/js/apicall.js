@@ -238,7 +238,6 @@ function todoApiCall(apiJson){
   if(apiJson.method === 'GET' || apiJson.method === 'PUT'){
     request.send();
   } else {
-    console.log(reqStr);
     request.send(reqStr);
   }
 

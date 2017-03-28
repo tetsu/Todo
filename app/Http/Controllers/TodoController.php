@@ -99,6 +99,7 @@ class TodoController extends Controller
           if($result > 0){
             return response()->json([
               'status'=>'success',
+              'data'=>$result,
               'message' => 'タスクを未完にしました。'
             ]);
           }
