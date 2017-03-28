@@ -303,9 +303,7 @@ function reflectDoneList(data){
 
 function reflectAddRequest(data){
   //show success message
-  document.getElementById('api-return-message').innerHTML = `「${data.title}」を作成しました。`;
-  document.getElementById('api-alert').className = "alert alert-success";
-  document.getElementById('api-alert').setAttribute("style", "visibility:visible;");
+  showSuccessMessage(`「${data.title}」を作成しました。`);
 
   //Reset Add Task form
   document.getElementById('title-add-input').value = "";

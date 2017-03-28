@@ -17,7 +17,7 @@ class CreateTodosTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->string('title');
-            $table->text('detail');
+            $table->text('detail')->nullable();
             $table->integer('priority');
             $table->date('due_date')->nullable();
             $table->date('comp_date')->nullable();
