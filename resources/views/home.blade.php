@@ -20,8 +20,8 @@
           <thead class="thead-inverse">
             <tr>
               <th>
-                <span><button id="todo-group-comp-btn" class="group-comp-btn btn btn-info btn-sm" data-toggle="modal" data-target="#groupCompModal" disabled>完了</button></span>
-                <span><button id="todo-group-del-btn" class="todo-group-del-btn btn btn-info btn-sm" data-toggle="modal" data-target="#groupDelModal" disabled>削除</button></span>
+                <span><button id="todo-group-comp-btn" class="todo-group-comp-btn btn btn-info btn-sm" data-toggle="modal" data-target="#todoGroupCompModal" disabled>完了</button></span>
+                <span><button id="todo-group-del-btn" class="todo-group-del-btn btn btn-info btn-sm" data-toggle="modal" data-target="#todoGroupDelModal" disabled>削除</button></span>
               </th>
               <th>未完タスク</th>
               <th>予定日</th>
@@ -46,8 +46,8 @@
           <thead class="thead-inverse">
             <tr>
               <th>
-                <span><button id="done-group-uncomp-btn" class="group-uncomp-btn btn btn-info btn-sm" data-toggle="modal" data-target="#groupUncompModal" disabled>未完</button></span>
-                <span><button id="done-group-del-btn" class="done-group-del-btn btn btn-info btn-sm" data-toggle="modal" data-target="#groupDelModal" disabled>削除</button></span>
+                <span><button id="done-group-uncomp-btn" class="group-uncomp-btn btn btn-info btn-sm" data-toggle="modal" data-target="#doneGroupUncompModal" disabled>未完</button></span>
+                <span><button id="done-group-del-btn" class="done-group-del-btn btn btn-info btn-sm" data-toggle="modal" data-target="#doneGroupDelModal" disabled>削除</button></span>
               </th>
               <th>完了タスク</th>
               <th>完了日</th>
@@ -179,8 +179,8 @@
   </div>
 </div>
 
-<!-- まとめ削除モーダル -->
-<div class="modal fade" id="groupDelModal" tabindex="-1" role="dialog" aria-labelledby="groupDelModalLabel" aria-hidden="true">
+<!-- TODOまとめ削除モーダル -->
+<div class="modal fade" id="todoGroupDelModal" tabindex="-1" role="dialog" aria-labelledby="todoGroupDelModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -190,18 +190,39 @@
         </button>
       </div>
       <div class="modal-body" style="text-align: center;">
-        タスクをまとめて削除しますか？
+        未完タスクをまとめて削除しますか？
       </div>
       <div class="modal-footer">
-        <button type="button" id="group-delete-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-        <button type="button" id="group-delete-confirm-button" class="btn btn-primary" data-dismiss="modal">削除</button>
+        <button type="button" id="todo-group-delete-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+        <button type="button" id="todo-group-delete-confirm-button" class="btn btn-primary" data-dismiss="modal">削除</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- まとめ完了モーダル -->
-<div class="modal fade" id="groupCompModal" tabindex="-1" role="dialog" aria-labelledby="groupCompModalLabel" aria-hidden="true">
+<!-- DONEまとめ削除モーダル -->
+<div class="modal fade" id="doneGroupDelModal" tabindex="-1" role="dialog" aria-labelledby="doneGroupDelModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">タスク削除</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        完了タスクをまとめて削除しますか？
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="done-group-delete-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+        <button type="button" id="done-group-delete-confirm-button" class="btn btn-primary" data-dismiss="modal">削除</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TODOまとめ完了モーダル -->
+<div class="modal fade" id="todoGroupCompModal" tabindex="-1" role="dialog" aria-labelledby="todoGroupCompModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -214,15 +235,15 @@
         タスクをまとめて完了にしますか？
       </div>
       <div class="modal-footer">
-        <button type="button" id="group-comp-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-        <button type="button" id="group-comp-confirm-button" class="btn btn-primary" data-dismiss="modal">削除</button>
+        <button type="button" id="todo-group-comp-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+        <button type="button" id="todo-group-comp-confirm-button" class="btn btn-primary" data-dismiss="modal">削除</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- まとめ未完モーダル -->
-<div class="modal fade" id="groupUncompModal" tabindex="-1" role="dialog" aria-labelledby="groupUncompModalLabel" aria-hidden="true">
+<!-- DONEまとめ未完モーダル -->
+<div class="modal fade" id="doneGroupUncompModal" tabindex="-1" role="dialog" aria-labelledby="doneGroupUncompModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -235,8 +256,8 @@
         タスクをまとめて未完にしますか？
       </div>
       <div class="modal-footer">
-        <button type="button" id="group-uncomp-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-        <button type="button" id="group-uncomp-confirm-button" class="btn btn-primary" data-dismiss="modal">削除</button>
+        <button type="button" id="done-group-uncomp-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+        <button type="button" id="done-group-uncomp-confirm-button" class="btn btn-primary" data-dismiss="modal">削除</button>
       </div>
     </div>
   </div>

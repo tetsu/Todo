@@ -126,36 +126,34 @@ function getCheckedItems(group_name){
   return delKeys;
 }
 
-function todoCheckboxActions(){
+function activateTodoGroupButtons(){
   var checkedItems = getCheckedItems('todo');
   if(checkedItems.length > 0){
     document.getElementById('todo-group-del-btn').disabled = "";
     document.getElementById('todo-group-comp-btn').disabled = "";
+    document.getElementById('todo-group-delete-confirm-button').setAttribute('data-key', `[${checkedItems}]`);
+    document.getElementById('todo-group-comp-confirm-button').setAttribute('data-key', `[${checkedItems}]`);
   } else {
     document.getElementById('todo-group-del-btn').disabled = "true";
     document.getElementById('todo-group-comp-btn').disabled = "true";
+    document.getElementById('todo-group-delete-confirm-button').setAttribute('data-key', ``);
+    document.getElementById('todo-group-comp-confirm-button').setAttribute('data-key', ``);
   }
 }
 
-function doneCheckboxActions(){
+function activateDoneGroupButtons(){
   var checkedItems = getCheckedItems('done');
   if(checkedItems.length > 0){
     document.getElementById('done-group-del-btn').disabled = "";
     document.getElementById('done-group-uncomp-btn').disabled = "";
+    document.getElementById('done-group-delete-confirm-button').setAttribute('data-key', `[${checkedItems}]`);
+    document.getElementById('done-group-uncomp-confirm-button').setAttribute('data-key', `[${checkedItems}]`);
   } else {
     document.getElementById('done-group-del-btn').disabled = "true";
     document.getElementById('done-group-uncomp-btn').disabled = "true";
+    document.getElementById('done-group-delete-confirm-button').setAttribute('data-key', ``);
+    document.getElementById('done-group-uncomp-confirm-button').setAttribute('data-key', ``);
   }
-}
-
-function todoGroupDelActions(){
-  var checkedItems = getCheckedItems('todo');
-  document.getElementById('group-delete-confirm-button').setAttribute('data-key', `[${checkedItems}]`);
-}
-
-function doneGroupDelActions(){
-  var checkedItems = getCheckedItems('done');
-  document.getElementById('group-delete-confirm-button').setAttribute('data-key', `[${checkedItems}]`);
 }
 
 function todoApiCall(apiJson){
@@ -364,27 +362,23 @@ document.addEventListener('click', function (event) {
     compTask(event.target.getAttribute("data-key"));
   } else if (event.target.className.split(" ")[0] ==='uncomp-btn') {
     uncompTask(event.target.getAttribute("data-key"));
-  } else if (event.target.className.split(" ")[0] ==='todo-group-del-btn') {
-    todoGroupDelActions();
-  } else if (event.target.className.split(" ")[0] ==='done-group-del-btn') {
-    doneGroupDelActions();
-  } else if (event.target.className.split(" ")[0] ==='group-comp-btn') {
-    getCheckedItems('todo');
-  } else if (event.target.className.split(" ")[0] ==='group-uncomp-btn') {
-    getCheckedItems('done');
   } else if (event.target.className.split(" ")[0] ==='todo-checkbox') {
-    todoCheckboxActions();
+    activateTodoGroupButtons();
   } else if (event.target.className.split(" ")[0] ==='done-checkbox') {
-    doneCheckboxActions();
-  } else if (event.target.type === 'checkbox') {
-    //console.log('checkbox clicked');
-    //uncheckTheOther();
-
+    activateDoneGroupButtons();
   } else if (event.target.id === 'confirm-delete-button'){
     deleteTask(event.target.getAttribute("data-key"));
   } else if (event.target.id === 'confirm-update-button'){
     updateTask();
   } else if (event.target.id === 'confirm-add-button'){
     addTask();
+  } else if (event.target.id === 'todo-group-delete-confirm-button'){
+
+  } else if (event.target.id === 'todo-group-comp-confirm-button'){
+
+  } else if (event.target.id === 'done-group-delete-confirm-button'){
+
+  } else if (event.target.id === 'done-group-uncomp-confirm-button'){
+
   }
 });
