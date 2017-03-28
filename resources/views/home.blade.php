@@ -226,13 +226,13 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">タスクをまとめて完了</h5>
+        <h5 class="modal-title" id="exampleModalLabel">未完タスクをまとめて完了</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body" style="text-align: center;">
-        タスクをまとめて完了にしますか？
+        未完タスクをまとめて完了にしますか？
       </div>
       <div class="modal-footer">
         <button type="button" id="todo-group-comp-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
@@ -247,13 +247,13 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">タスクをまとめて未完にする</h5>
+        <h5 class="modal-title" id="exampleModalLabel">完了タスクをまとめて未完</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body" style="text-align: center;">
-        タスクをまとめて未完にしますか？
+        完了タスクをまとめて未完にしますか？
       </div>
       <div class="modal-footer">
         <button type="button" id="done-group-uncomp-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>

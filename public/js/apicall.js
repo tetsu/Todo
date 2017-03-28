@@ -373,12 +373,12 @@ document.addEventListener('click', function (event) {
   } else if (event.target.id === 'confirm-add-button'){
     addTask();
   } else if (event.target.id === 'todo-group-delete-confirm-button'){
-
+    console.log('todo-group-delete-confirm-button');
   } else if (event.target.id === 'todo-group-comp-confirm-button'){
-
+    console.log('todo-group-comp-confirm-button');
   } else if (event.target.id === 'done-group-delete-confirm-button'){
-
+    console.log('done-group-delete-confirm-button');
   } else if (event.target.id === 'done-group-uncomp-confirm-button'){
-
+    console.log('done-group-uncomp-confirm-button');
   }
 });

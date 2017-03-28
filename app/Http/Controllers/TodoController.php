@@ -51,6 +51,7 @@ class TodoController extends Controller
         $todo->due_date = $request->due_date;
         $todo->priority = $request->priority;
         $todo->user_id = $request->user_id;
+        $todo->detail = $request->detail;
         if($todo->save()){
           return response()->json([
             'status'=>'success',
