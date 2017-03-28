@@ -93,6 +93,18 @@ function uncompTask(id){
   todoApiCall({'callName':'comp' ,'request':{id, 'comp_date':'uncomp'}, 'method':'PUT'});
 }
 
+function deleteTasks(ids){
+  todoApiCall({'callName':'group' ,'request':{ids, 'action':'delete'}, 'method':'POST'});
+}
+
+function compTasks(ids){
+  todoApiCall({'callName':'group' ,'request':{ids, 'action':'comp'}, 'method':'POST'});
+}
+
+function uncompTasks(ids){
+  todoApiCall({'callName':'group' ,'request':{ids, 'action':'uncomp'}, 'method':'POST'});
+}
+
 function editTask(todo_id){
   //empty values in Edit Modal
   document.getElementById('todo-title-edit-input').value = null;
@@ -160,28 +172,32 @@ function todoApiCall(apiJson){
   //encodeURIComponent
   firstLoop = true;
   reqStr = "";
-  for (key in apiJson.request) {
-    if(firstLoop){
-      //reqStr = "?";
-      firstLoop = false;
-    } else {
-      reqStr += "&";
+
+  if(apiJson.method === 'GET' || apiJson.method === 'PUT'){
+    for (key in apiJson.request) {
+      if(firstLoop){
+        //reqStr = "?";
+        firstLoop = false;
+      } else {
+        reqStr += "&";
+      }
+      reqStr += `${key}=${apiJson.request[key]}`;
     }
-    reqStr += `${key}=${apiJson.request[key]}`;
+  } else if(apiJson.method === 'POST') {
+    reqStr = JSON.stringify(apiJson.request);
   }
+
   var request = new XMLHttpRequest();
-  if(apiJson.callName === 'index'
-  || apiJson.callName === 'done'
-  || apiJson.callName === 'get_one_todo'){
+  if(apiJson.callName === 'index' || apiJson.callName === 'done' || apiJson.callName === 'get_one_todo'){
     request.open('GET', '/api/todo?'+reqStr, true);
+  } else if(apiJson.callName === 'add'){
+    request.open('GET', '/api/todo/create?'+reqStr, true);
   } else if(apiJson.callName === 'delete'){
     request.open('DELETE', '/api/todo/'+apiJson.request['id'], true);
   } else if(apiJson.callName === 'update' || apiJson.callName === 'comp'){
     request.open('PUT', '/api/todo/'+apiJson.request['id']+'?'+reqStr, true);
-  } else if(apiJson.callName === 'add'){
-    request.open('GET', '/api/todo/create'+'?'+reqStr, true);
-  } else {
-    request.open('GET', '/api/todo/'+apiJson.callName+'?'+reqStr, true);
+  } else if(apiJson.callName === 'group'){
+    request.open('POST', '/api/todo', true);
   }
 
   request.onload = function() {
@@ -202,14 +218,18 @@ function todoApiCall(apiJson){
           reflectCompRequest(responseJson);
         } else if(apiJson.callName == 'delete'){
           reflectDeleteRequest(responseJson.data);
+        } else if(apiJson.callName == 'group'){
+          reflectGroupRequest(responseJson);
+        }
+      } else {
+        if(responseJson.status === 'fail' && responseJson.message){
+          showErrorMessage(responseJson.message);
+        } else {
+          showErrorMessage('Error');
         }
       }
     } else {
-      if(responseJson.status === 'fail' && responseJson.message){
-        showErrorMessage(responseJson.message);
-      } else {
-        showErrorMessage('Database Error');
-      }
+      showErrorMessage('Error');
     }
   };
   request.onerror = function() {
@@ -218,6 +238,7 @@ function todoApiCall(apiJson){
   if(apiJson.method === 'GET' || apiJson.method === 'PUT'){
     request.send();
   } else {
+    console.log(reqStr);
     request.send(reqStr);
   }
 
@@ -282,7 +303,7 @@ function reflectDoneList(data){
           <td style="width:120px;">${priority}</td>
           <td style="width:190px;">
             <button type="button" class="del-btn btn btn-default" data-toggle="modal" data-target="#delModal" data-key="${item.id}">削除</button>
-            <button type="button" class="edit-btn btn btn-default" data-toggle="modal" data-target="#editTodoModal" data-key="${item.id}">編集</button>
+            <button type="button" class="edit-btn btn btn-default" data-toggle="modal" data-target="#editTodoModal" data-key="${item.id}">詳細</button>
             <button type="button" class="uncomp-btn btn btn-default" data-key="${item.id}">未完</button>
           </td>`;
       var listElement = document.getElementById("done-table").appendChild(doneList);
@@ -320,13 +341,13 @@ function reflectAddRequest(data){
 function reflectUpdateRequest(res){
   refreshTodoList();
   refreshDoneList();
-  showSuccessMessage(`${res.message}`);
+  showSuccessMessage(res.message);
 }
 
 function reflectCompRequest(res){
   refreshTodoList();
   refreshDoneList();
-  showSuccessMessage(`${res.message}`);
+  showSuccessMessage(res.message);
 }
 
 function reflectDeleteRequest(data){
@@ -339,6 +360,12 @@ function reflectDeleteRequest(data){
   }
   //data.comp_date ? refreshDoneList() : refreshTodoList() ;
   showSuccessMessage(`「${data.title}」を削除しました。`);
+}
+
+function reflectGroupRequest(res){
+  refreshTodoList();
+  refreshDoneList();
+  showSuccessMessage(res.message);
 }
 
 function reflectEditRequest(data){
@@ -371,12 +398,12 @@ document.addEventListener('click', function (event) {
   } else if (event.target.id === 'confirm-add-button'){
     addTask();
   } else if (event.target.id === 'todo-group-delete-confirm-button'){
-    console.log('todo-group-delete-confirm-button');
+    deleteTasks(document.getElementById('todo-group-delete-confirm-button').getAttribute('data-key'));
   } else if (event.target.id === 'todo-group-comp-confirm-button'){
-    console.log('todo-group-comp-confirm-button');
+    compTasks(document.getElementById('todo-group-comp-confirm-button').getAttribute('data-key'));
   } else if (event.target.id === 'done-group-delete-confirm-button'){
-    console.log('done-group-delete-confirm-button');
+    deleteTasks(document.getElementById('done-group-delete-confirm-button').getAttribute('data-key'));
   } else if (event.target.id === 'done-group-uncomp-confirm-button'){
-    console.log('done-group-uncomp-confirm-button');
+    uncompTasks(document.getElementById('done-group-uncomp-confirm-button').getAttribute('data-key'));
   }
 });

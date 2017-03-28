@@ -73,7 +73,41 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
-        return $request;
+        $data = $request->json()->all();
+        if($data['action'] === 'delete'){
+          $result = Todo::wherein('id', json_decode($data['ids'], true))->delete();
+          if($result > 0){
+            return response()->json([
+              'status'=>'success',
+              'data' => $result,
+              'message' => 'タスクを削除しました。'
+            ]);
+          }
+        } elseif($data['action'] === 'comp') {
+          $result = Todo::wherein('id', json_decode($data['ids'], true))
+                      ->update(['comp_date' => date("Y-m-d")]);
+          if($result > 0){
+            return response()->json([
+              'status'=>'success',
+              'data' => $result,
+              'message' => 'タスクを完了にしました。'
+            ]);
+          }
+        } elseif($data['action'] === 'uncomp') {
+          $result = Todo::wherein('id', json_decode($data['ids'], true))
+                      ->update(['comp_date' => null]);
+          if($result > 0){
+            return response()->json([
+              'status'=>'success',
+              'message' => 'タスクを未完にしました。'
+            ]);
+          }
+        }
+
+        return response()->json([
+          'status'=>'fail',
+          'message'=>'エラー'
+        ]);
     }
 
     /**

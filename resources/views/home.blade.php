@@ -236,7 +236,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" id="todo-group-comp-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-        <button type="button" id="todo-group-comp-confirm-button" class="btn btn-primary" data-dismiss="modal">削除</button>
+        <button type="button" id="todo-group-comp-confirm-button" class="btn btn-primary" data-dismiss="modal">完了にする</button>
       </div>
     </div>
   </div>
@@ -257,7 +257,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" id="done-group-uncomp-cancel-button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-        <button type="button" id="done-group-uncomp-confirm-button" class="btn btn-primary" data-dismiss="modal">削除</button>
+        <button type="button" id="done-group-uncomp-confirm-button" class="btn btn-primary" data-dismiss="modal">未完にする</button>
       </div>
     </div>
   </div>
