@@ -233,13 +233,13 @@ function todoApiCall(apiJson){
         } else if(apiJson.callName == 'add'){
           reflectAddRequest(responseJson.data);
         } else if(apiJson.callName == 'update'){
-          reflectUpdateRequest(responseJson);
+          updateAllLists(responseJson);
         } else if(apiJson.callName == 'comp'){
-          reflectCompRequest(responseJson);
+          updateAllLists(responseJson);
         } else if(apiJson.callName == 'delete'){
           reflectDeleteRequest(responseJson.data);
         } else if(apiJson.callName == 'group'){
-          reflectGroupRequest(responseJson);
+          updateAllLists(responseJson);
         }
       } else {
         if(responseJson.status === 'fail' && responseJson.message){
@@ -347,6 +347,13 @@ function reflectDoneList(data){
 
 }
 
+//Show updated todo and done tasks after API calls
+function updateAllLists(res){
+  refreshTodoList();
+  refreshDoneList();
+  showSuccessMessage(res.message);
+}
+
 //Show added Task
 //Clean up Add Task Modal first.
 function reflectAddRequest(data){
@@ -365,18 +372,6 @@ function reflectAddRequest(data){
   refreshTodoList();
 }
 
-function reflectUpdateRequest(res){
-  refreshTodoList();
-  refreshDoneList();
-  showSuccessMessage(res.message);
-}
-
-function reflectCompRequest(res){
-  refreshTodoList();
-  refreshDoneList();
-  showSuccessMessage(res.message);
-}
-
 function reflectDeleteRequest(data){
   targetTable = data.comp_date ? `done-table` : `todo-table`;
   document.getElementById(targetTable).removeChild(document.getElementById(`todo-${data.id}`));
@@ -389,12 +384,6 @@ function reflectDeleteRequest(data){
   showSuccessMessage(`「${data.title}」を削除しました。`);
 }
 
-function reflectGroupRequest(res){
-  refreshTodoList();
-  refreshDoneList();
-  showSuccessMessage(res.message);
-}
-
 function reflectEditRequest(data){
   document.getElementById('todo-title-edit-input').value = data.title;
   document.getElementById('due-date-edit-input').value = data.due_date;
@@ -402,10 +391,9 @@ function reflectEditRequest(data){
   document.getElementById(`priority-edit-input-${data.priority}`).setAttribute("checked", true);
   document.getElementById('detail-edit-input').value = data.detail;
   document.getElementById("confirm-update-button").setAttribute("data-key", data.id);
-
 }
 
-//Event Listners
+//Event Listeners
 document.addEventListener('click', function (event) {
   if (event.target.className.split(" ")[0] ==='edit-btn') {
     editTask(event.target.getAttribute("data-key"));
