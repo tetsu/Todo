@@ -353,6 +353,8 @@ function updateAllLists(res){
   refreshTodoList();
   refreshDoneList();
   if(res.message) showSuccessMessage(res.message);
+  activateTodoGroupButtons();
+  activateDoneGroupButtons();
 }
 
 //Show added Task
