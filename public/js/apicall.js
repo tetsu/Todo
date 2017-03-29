@@ -1,3 +1,4 @@
+//Initialize the main page with the latest todo and done lists
 window.onload = function(){
   refreshTodoList();
   refreshDoneList();
@@ -351,7 +352,7 @@ function reflectDoneList(data){
 function updateAllLists(res){
   refreshTodoList();
   refreshDoneList();
-  showSuccessMessage(res.message);
+  if(res.message) showSuccessMessage(res.message);
 }
 
 //Show added Task
