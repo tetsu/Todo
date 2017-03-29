@@ -114,7 +114,7 @@ function editTask(todo_id){
   document.getElementsByClassName('priority-edit-input').checked=false;
 
   //API Call
-  todoApiCall({'callName':'get_one_todo' ,'request':{todo_id} });
+  todoApiCall({'callName':'get_one_todo' ,'request':{todo_id}, 'method':'GET'});
 }
 
 function getToday(){
