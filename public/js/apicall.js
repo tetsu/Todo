@@ -284,9 +284,9 @@ function reflectGetList(data){
       todoList.id = `todo-${item.id}`;
       todoList.innerHTML =
          `<th style="width:120px;" scope="row"><input id="todo-checkbox-${item.id}" class="todo-checkbox" type="checkbox" name="todo-checkbox" data-key="${item.id}" value="${item.id}"></th>
-          <td>${item.title}</th>
-          <td style="width:100px;">${item.due_date}</td>
-          <td style="width:120px;">${priority}</td>
+          <td class="edit-btn" data-toggle="modal" data-target="#editTodoModal" data-key="${item.id}">${item.title}</th>
+          <td class="edit-btn" data-toggle="modal" data-target="#editTodoModal" data-key="${item.id}" style="width:100px;">${item.due_date}</td>
+          <td class="edit-btn" data-toggle="modal" data-target="#editTodoModal" data-key="${item.id}" style="width:120px;">${priority}</td>
           <td style="width:190px;">
             <button type="button" class="del-btn btn btn-default" data-toggle="modal" data-target="#delModal" data-key="${item.id}">削除</button>
             <button type="button" class="edit-btn btn btn-default" data-toggle="modal" data-target="#editTodoModal" data-key="${item.id}">詳細</button>
@@ -324,9 +324,9 @@ function reflectDoneList(data){
       doneList.id = `todo-${item.id}`;
       doneList.innerHTML =
          `<th style="width:120px;" scope="row"><input id="done-checkbox-${item.id}" class="done-checkbox" type="checkbox" name="done-checkbox" data-key="${item.id}" value="${item.id}"></th>
-          <td>${item.title}</td>
-          <td style="width:100px;">${item.comp_date}</td>
-          <td style="width:120px;">${priority}</td>
+          <td class="edit-btn" data-toggle="modal" data-target="#editTodoModal" data-key="${item.id}">${item.title}</td>
+          <td class="edit-btn" data-toggle="modal" data-target="#editTodoModal" data-key="${item.id}" style="width:100px;">${item.comp_date}</td>
+          <td class="edit-btn" data-toggle="modal" data-target="#editTodoModal" data-key="${item.id}" style="width:120px;">${priority}</td>
           <td style="width:190px;">
             <button type="button" class="del-btn btn btn-default" data-toggle="modal" data-target="#delModal" data-key="${item.id}">削除</button>
             <button type="button" class="edit-btn btn btn-default" data-toggle="modal" data-target="#editTodoModal" data-key="${item.id}">詳細</button>
