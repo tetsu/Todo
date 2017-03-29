@@ -13,13 +13,7 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
       $faker = Faker\Factory::create('ja_JP');
-
-      User::create([
-          'name' => '鉄郎',
-          'email' => 'tetsuromori@gmail.com',
-          'password' => bcrypt('secret')
-      ]);
-
+      
       User::create([
           'name' => 'テストユーザー',
           'email' => 'test@test.com',
