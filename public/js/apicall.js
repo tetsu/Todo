@@ -197,12 +197,8 @@ function todoApiCall(apiJson){
   if(apiJson.method === 'GET' || apiJson.method === 'PUT'){
     firstLoop = true;
     for (key in apiJson.request) {
-      if(firstLoop){
-        //reqStr = "?";
-        firstLoop = false;
-      } else {
-        reqStr += "&";
-      }
+      if(firstLoop){firstLoop = false;}
+      else {reqStr += "&";}
       reqStr += `${key}=${apiJson.request[key]}`;
     }
   } else if(apiJson.method === 'POST') {
@@ -262,7 +258,7 @@ function todoApiCall(apiJson){
   };
 
   //Sent request
-  if(apiJson.method === 'GET' || apiJson.method === 'PUT'){
+  if(apiJson.method === 'GET' || apiJson.method === 'PUT' || apiJson.method === 'DELETE'){
     request.send();
   } else {
     request.send(reqStr);
