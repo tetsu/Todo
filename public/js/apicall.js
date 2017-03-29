@@ -38,6 +38,9 @@ function refreshTodoList(){
   //show spinner
   todoLiStSpinner.innerHTML = `<i class="fa fa-refresh fa-spin" style="font-size:24px"/></i>`;
 
+  //Update button activation
+  activateTodoGroupButtons();
+
   todoApiCall({'callName':'index' ,'request':{user_id, 'done':0}, 'method':'GET' });
 }
 
@@ -54,6 +57,9 @@ function refreshDoneList(){
 
   //show spinner
   doneListSpinner.innerHTML = `<i class="fa fa-refresh fa-spin" style="font-size:24px"/></i>`;
+
+  //update button activation
+  activateDoneGroupButtons();
 
   todoApiCall({'callName':'done' ,'request':{user_id, 'done':1}, method:'GET' });
 }
@@ -353,8 +359,6 @@ function updateAllLists(res){
   refreshTodoList();
   refreshDoneList();
   if(res.message) showSuccessMessage(res.message);
-  activateTodoGroupButtons();
-  activateDoneGroupButtons();
 }
 
 //Show added Task
