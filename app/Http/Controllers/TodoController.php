@@ -22,14 +22,16 @@ class TodoController extends Controller
         $todo = Todo::where('user_id', $request->user_id)
           ->whereNotNull('comp_date')
           ->orderBy('comp_date','DESC')
+          ->orderBy('updated_at','DESC')
           ->get();
       }
 
       else {
         $todo = Todo::where('user_id', $request->user_id)
           ->where('comp_date', null)
-          //->orderBy('priority','DESC')
-          ->orderBy('due_date','ASC')->get();
+          ->orderBy('due_date','ASC')
+          ->orderBy('updated_at','ASC')
+          ->get();
       }
 
       return response()->json([

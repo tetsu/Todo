@@ -3,6 +3,7 @@ window.onload = function(){
   refreshDoneList();
 }
 
+//Show error messages on the main page as a modal
 function showErrorMessage(message){
   document.getElementById('api-return-message').innerHTML = `${message}`;
   document.getElementById('api-alert').className = "alert alert-danger";
@@ -12,6 +13,7 @@ function showErrorMessage(message){
   }, 5000);
 }
 
+//Show success messages on the main screen as a modal
 function showSuccessMessage(message){
   document.getElementById('api-return-message').innerHTML = `${message}`;
   document.getElementById('api-alert').className = "alert alert-success";
@@ -21,6 +23,7 @@ function showSuccessMessage(message){
   }, 5000);
 }
 
+//Refresh the todo list on the main page
 function refreshTodoList(){
   //remove current todo items
   todoTable = document.getElementById('todo-table');
@@ -37,6 +40,7 @@ function refreshTodoList(){
   todoApiCall({'callName':'index' ,'request':{user_id, 'done':0}, 'method':'GET' });
 }
 
+//Refresh the done list on the main page
 function refreshDoneList(){
   //remove current done items
   doneTable = document.getElementById('done-table');
@@ -53,6 +57,8 @@ function refreshDoneList(){
   todoApiCall({'callName':'done' ,'request':{user_id, 'done':1}, method:'GET' });
 }
 
+//Add task
+//Get information from Add Task modal.
 function addTask(){
   var title = document.getElementById('title-add-input').value;
   var due_date = document.getElementById('due-date-add-input').value;
@@ -66,6 +72,8 @@ function addTask(){
   todoApiCall({'callName':'add' ,'request':{title, due_date, user_id, priority, detail}, 'method':'GET'});
 }
 
+//Add task
+//Get information from Edit Task modal.
 function updateTask(){
   var id = document.getElementById('confirm-update-button').getAttribute("data-key");
   var title = document.getElementById('todo-title-edit-input').value;
@@ -81,30 +89,38 @@ function updateTask(){
   todoApiCall({'callName':'update' ,'request':{id, title, due_date, comp_date, user_id, priority, detail}, 'method':'PUT'});
 }
 
+//Delete one task.
 function deleteTask(todo_id){
   todoApiCall({'callName':'delete' ,'request':{'id':todo_id}, 'method':'DELETE'});
 }
 
+//Set one task as completed
 function compTask(id){
   todoApiCall({'callName':'comp' ,'request':{id, 'comp_date':getToday()}, 'method':'PUT'});
 }
 
+//Set one task as incompleted
 function uncompTask(id){
   todoApiCall({'callName':'comp' ,'request':{id, 'comp_date':'uncomp'}, 'method':'PUT'});
 }
 
+//Delete multiple tasks
 function deleteTasks(ids){
   todoApiCall({'callName':'group' ,'request':{ids, 'action':'delete'}, 'method':'POST'});
 }
 
+//Set multiple tasks as completed
 function compTasks(ids){
   todoApiCall({'callName':'group' ,'request':{ids, 'action':'comp'}, 'method':'POST'});
 }
 
+//Set multiple tasks as incompleted
 function uncompTasks(ids){
   todoApiCall({'callName':'group' ,'request':{ids, 'action':'uncomp'}, 'method':'POST'});
 }
 
+//Edit one tasks
+//Clean up Edit modal first.
 function editTask(todo_id){
   //empty values in Edit Modal
   document.getElementById('todo-title-edit-input').value = null;
@@ -117,6 +133,7 @@ function editTask(todo_id){
   todoApiCall({'callName':'get_one_todo' ,'request':{todo_id}, 'method':'GET'});
 }
 
+//Get today's date
 function getToday(){
   var today = new Date();
   var dd = today.getDate();
@@ -127,6 +144,8 @@ function getToday(){
   return `${yyyy}-${mm}-${dd}`;
 }
 
+//Get tasks which checkboxes are checked
+// Return: Array of IDs of checked tasks
 function getCheckedItems(group_name){
   var checkedItems = document.getElementsByClassName(`${group_name}-checkbox`);
   var delKeys = [];
@@ -138,6 +157,7 @@ function getCheckedItems(group_name){
   return delKeys;
 }
 
+//Activate Todo group buttons to delete/complete multiple tasks when there are checked tasks.
 function activateTodoGroupButtons(){
   var checkedItems = getCheckedItems('todo');
   if(checkedItems.length > 0){
@@ -153,6 +173,7 @@ function activateTodoGroupButtons(){
   }
 }
 
+//Activate Done group buttons to delete/incomplete multiple tasks when there are checked tasks.
 function activateDoneGroupButtons(){
   var checkedItems = getCheckedItems('done');
   if(checkedItems.length > 0){
@@ -168,12 +189,13 @@ function activateDoneGroupButtons(){
   }
 }
 
+//Handle all the API calls
 function todoApiCall(apiJson){
-  //encodeURIComponent
-  firstLoop = true;
   reqStr = "";
 
+  //Generate request strings
   if(apiJson.method === 'GET' || apiJson.method === 'PUT'){
+    firstLoop = true;
     for (key in apiJson.request) {
       if(firstLoop){
         //reqStr = "?";
@@ -187,6 +209,7 @@ function todoApiCall(apiJson){
     reqStr = JSON.stringify(apiJson.request);
   }
 
+  //Set API request URIs
   var request = new XMLHttpRequest();
   if(apiJson.callName === 'index' || apiJson.callName === 'done' || apiJson.callName === 'get_one_todo'){
     request.open('GET', '/api/todo?'+reqStr, true);
@@ -200,6 +223,7 @@ function todoApiCall(apiJson){
     request.open('POST', '/api/todo', true);
   }
 
+  //Actions after API callbacks
   request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
       var responseJson = JSON.parse(request.responseText);
@@ -232,9 +256,12 @@ function todoApiCall(apiJson){
       showErrorMessage('Error');
     }
   };
+  //show error message
   request.onerror = function() {
     showErrorMessage('Database Error');
   };
+
+  //Sent request
   if(apiJson.method === 'GET' || apiJson.method === 'PUT'){
     request.send();
   } else {
@@ -243,6 +270,8 @@ function todoApiCall(apiJson){
 
 }
 
+
+//Show Todo task list on the main page
 function reflectGetList(data){
   todoLiStSpinner = document.getElementById('todo-table-spinner');
   if(data.length > 0){
@@ -282,6 +311,7 @@ function reflectGetList(data){
 
 }
 
+//Show Done task list on the main page
 function reflectDoneList(data){
   doneListSpinner = document.getElementById('done-table-spinner');
   if(data.length > 0){
@@ -321,6 +351,8 @@ function reflectDoneList(data){
 
 }
 
+//Show added Task
+//Clean up Add Task Modal first.
 function reflectAddRequest(data){
   //show success message
   showSuccessMessage(`「${data.title}」を作成しました。`);
@@ -377,6 +409,7 @@ function reflectEditRequest(data){
 
 }
 
+//Event Listners
 document.addEventListener('click', function (event) {
   if (event.target.className.split(" ")[0] ==='edit-btn') {
     editTask(event.target.getAttribute("data-key"));
